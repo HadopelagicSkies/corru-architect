@@ -4,7 +4,10 @@ package com.corru_architect;
 import com.corru_architect.items.SimpleTooltipItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
+import net.minecraft.item.equipment.ArmorMaterials;
+import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -30,6 +33,10 @@ public class CorruArchitectItems {
         ItemGroupEvents.modifyEntriesEvent(CORRU_ARCHITECT_GROUP_KEY)
                 .register((itemGroup) -> {
                     itemGroup.add(CorruArchitectItems.WILD_CORRU_CHUNK);
+                    itemGroup.add(CorruArchitectItems.MINDSPIKE);
+                    itemGroup.add(CorruArchitectItems.MINDSPIKE_HELMET);
+                    itemGroup.add(CorruArchitectItems.ECHO_CORRUCYST);
+                    itemGroup.add(CorruArchitectItems.SFER_CUBE);
                 });
 
         WILD_CORRU_CHUNK.setTooltipDetails("wawawa", Formatting.LIGHT_PURPLE);
@@ -51,6 +58,26 @@ public class CorruArchitectItems {
     public static SimpleTooltipItem WILD_CORRU_CHUNK = register(SimpleTooltipItem::new,
             new Item.Settings().rarity(Rarity.EPIC),
             "wild_corru_chunk"
+    );
+
+    public static SimpleTooltipItem MINDSPIKE = register(SimpleTooltipItem::new,
+            new Item.Settings().maxCount(1),
+            "mindspike"
+    );
+
+    public static SimpleTooltipItem SFER_CUBE = register(SimpleTooltipItem::new,
+            new Item.Settings(),
+            "sfer_cube"
+    );
+
+    public static SimpleTooltipItem ECHO_CORRUCYST = register(SimpleTooltipItem::new,
+            new Item.Settings(),
+            "echo_corrucyst"
+    );
+
+    public static SimpleTooltipItem MINDSPIKE_HELMET = register(SimpleTooltipItem::new,
+            ArmorMaterials.IRON.applySettings(new Item.Settings(), EquipmentType.HELMET),
+            "mindspike_helmet"
     );
 
 }
