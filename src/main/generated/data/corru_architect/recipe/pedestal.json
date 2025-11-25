@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": "corru_architect:wild_corru_chunk"
+  },
+  "pattern": [
+    "c c",
+    " c ",
+    "ccc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "corru_architect:pedestal"
+  }
+}

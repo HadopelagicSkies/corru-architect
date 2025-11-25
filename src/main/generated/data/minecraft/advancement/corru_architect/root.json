@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "archive_found": {
+      "conditions": {
+        "items": [
+          {
+            "items": "corru_architect:archive_corrucyst"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": "Find a crash-landed Archive Corrucyst",
+    "icon": {
+      "count": 1,
+      "id": "corru_architect:archive_corrucyst"
+    },
+    "title": "A Mysterious... Marble?"
+  },
+  "requirements": [
+    [
+      "archive_found"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

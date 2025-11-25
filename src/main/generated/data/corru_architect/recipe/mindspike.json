@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": "corru_architect:wild_corru",
+    "g": "minecraft:gold_ingot",
+    "i": "minecraft:iron_ingot",
+    "n": "minecraft:iron_nugget",
+    "r": "minecraft:redstone"
+  },
+  "pattern": [
+    "grg",
+    "ici",
+    "n n"
+  ],
+  "result": {
+    "count": 1,
+    "id": "corru_architect:mindspike"
+  }
+}

@@ -22,7 +22,7 @@
 			"com.corru_architect.CorruArchitectClient"
 		],
 		"fabric-datagen": [
-			"com.corru_architect.CorruArchitectDataGenerator"
+			"com.corru_architect.datagen.CorruArchitectDataGenerator"
 		]
 	},
 	"mixins": [

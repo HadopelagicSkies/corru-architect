@@ -26,6 +26,10 @@ public class CorruArchitectBlocks {
         {
             itemGroup.add(CorruArchitectBlocks.WILD_CORRU.asItem());
             itemGroup.add(CorruArchitectBlocks.ARCHIVE_CORRUCYST.asItem());
+            itemGroup.add(CorruArchitectBlocks.PEDESTAL.asItem());
+            itemGroup.add(CorruArchitectBlocks.CORRU_SHAPER.asItem());
+            itemGroup.add(CorruArchitectBlocks.SFER_REFINERY.asItem());
+            itemGroup.add(CorruArchitectBlocks.SFER_BLOCK.asItem());
         });
 
         WILD_CORRU.setTooltipDetails("wawawa", Formatting.LIGHT_PURPLE);

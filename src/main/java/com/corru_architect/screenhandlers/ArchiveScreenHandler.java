@@ -19,7 +19,7 @@ public class ArchiveScreenHandler extends ScreenHandler {
 
 
     private Map<String,Integer[][]> puzzleMap = Map.of(
-            "pedestal",pedestalPuzzle);
+            "pedestal_unlocked",pedestalPuzzle);
 
     public ArchiveScreenHandler(int syncId, PlayerInventory inventory) {
         super(CorruArchitect.ARCHIVE_SCREEN_HANDLER, syncId);
@@ -30,7 +30,22 @@ public class ArchiveScreenHandler extends ScreenHandler {
     }
 
     public boolean checkPuzzle(String puzzleName, int[][] puzzleProgress){
-        return false;
+        Integer[][] puzzleAnswer = puzzleMap.get(puzzleName);
+        for (int r = 0; r < puzzleProgress.length; r++) {
+            for (int c = 0; c < puzzleProgress[0].length; c++) {
+                if(puzzleAnswer[r][c] == 1 && puzzleProgress[r][c] !=1){
+                    return false;
+                }
+                else if(puzzleAnswer[r][c] == 0 && puzzleProgress[r][c] == 1){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void grantAchievement(PlayerEntity player, String puzzleName){
+
     }
 
 

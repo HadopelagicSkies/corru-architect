@@ -76,13 +76,13 @@ public class ArchiveScreen extends HandledScreen<ArchiveScreenHandler> {
         context.drawTexture(RenderLayer::getGuiTextured,PUZZLE_BACKGROUND,8 + i + ((fillAreaSize-150)/2) ,8 + j + ((fillAreaSize-150)/2) , 0, 0, 150, 150, 150, 150);
         //drawing tiles
         for (int r = 0; r < puzzleCells.length; r++) {
-            for (int x = 0; x < puzzleCells[0].length; x++) {
-                if(puzzleCells[r][x].state ==0){
-                    context.drawTexture(RenderLayer::getGuiTextured,PUZZLE_UNPRESSED, puzzleCells[r][x].getX(), puzzleCells[r][x].getY(), 0, 0, 10, 10, 10, 10);
-                } else if(puzzleCells[r][x].state ==1){
-                    context.drawTexture(RenderLayer::getGuiTextured,PUZZLE_PRESSED, puzzleCells[r][x].getX(), puzzleCells[r][x].getY(), 0, 0, 10, 10, 10, 10);
+            for (int c = 0; c < puzzleCells[0].length; c++) {
+                if(puzzleCells[r][c].state ==0){
+                    context.drawTexture(RenderLayer::getGuiTextured,PUZZLE_UNPRESSED, puzzleCells[r][c].getX(), puzzleCells[r][c].getY(), 0, 0, 10, 10, 10, 10);
+                } else if(puzzleCells[r][c].state ==1){
+                    context.drawTexture(RenderLayer::getGuiTextured,PUZZLE_PRESSED, puzzleCells[r][c].getX(), puzzleCells[r][c].getY(), 0, 0, 10, 10, 10, 10);
                 } else {
-                    context.drawTexture(RenderLayer::getGuiTextured,PUZZLE_X, puzzleCells[r][x].getX(), puzzleCells[r][x].getY(), 0, 0, 10, 10, 10, 10);
+                    context.drawTexture(RenderLayer::getGuiTextured,PUZZLE_X, puzzleCells[r][c].getX(), puzzleCells[r][c].getY(), 0, 0, 10, 10, 10, 10);
                 }
             }
         }
@@ -207,7 +207,8 @@ public class ArchiveScreen extends HandledScreen<ArchiveScreenHandler> {
                     puzzleCells[r][c] = this.addDrawableChild(new PuzzleCellButton(x + puzzleOffsetX + c*puzzleButtonSize, y + puzzleOffsetY + r*puzzleButtonSize, buttonIndex, (button) -> {
                         if (button instanceof PuzzleCellButton) {
                             ((PuzzleCellButton) button).advanceState();
-                            this.handler.checkPuzzle(activePuzzle, puzzleOutput(puzzleCells));
+                            if(this.handler.checkPuzzle(activePuzzle, puzzleOutput(puzzleCells)))
+                                CorruArchitect.LOGGER.info("puzzle correct");
                         }
                     }));
                     buttonIndex++;

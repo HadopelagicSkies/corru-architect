@@ -1,0 +1,57 @@
+{
+  "parent": "minecraft:corru_architect/root",
+  "criteria": {
+    "mindspike_connect": {
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": "corru_architect:archive_corrucyst"
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": "corru_architect:mindspike"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:item_used_on_block"
+    },
+    "mindspike_held": {
+      "conditions": {
+        "items": [
+          {
+            "items": "corru_architect:mindspike"
+          },
+          {
+            "items": "corru_architect:mindspike_helmet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": "Construct a Mindspike and Mindspike Helmet, and attempt connection to the Archive Corrucyst",
+    "icon": {
+      "count": 1,
+      "id": "corru_architect:mindspike"
+    },
+    "title": "ATTENTION::'mindspike logging active'"
+  },
+  "requirements": [
+    [
+      "mindspike_held"
+    ],
+    [
+      "mindspike_connect"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

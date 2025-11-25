@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:corru_architect/mindspike_connect",
+  "criteria": {
+    "pedestal_unlocked": {
+      "conditions": {
+        "recipe": "corru_architect:pedestal"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": "Repair the schematic for the Pedestal",
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "corru_architect:archive_corrucyst"
+    },
+    "title": "Schematic Recovery"
+  },
+  "requirements": [
+    [
+      "pedestal_unlocked"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
