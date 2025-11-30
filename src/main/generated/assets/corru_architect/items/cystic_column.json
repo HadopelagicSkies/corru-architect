@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "corru_architect:block/pedestal"
+    "model": "corru_architect:block/cystic_column"
   }
 }

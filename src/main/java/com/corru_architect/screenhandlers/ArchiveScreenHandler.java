@@ -1,6 +1,8 @@
 package com.corru_architect.screenhandlers;
 
 import com.corru_architect.CorruArchitect;
+import com.corru_architect.CorruArchitectBlocks;
+import com.corru_architect.RecipeUnlockMapping;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -10,19 +12,21 @@ import java.util.Map;
 
 public class ArchiveScreenHandler extends ScreenHandler {
 
-    private static final Integer[][] pedestalPuzzle = {
+    private static final Integer[][] columnPuzzle = {
             {1,1,0,1,1},
             {0,1,1,1,0},
             {0,0,1,0,0},
             {0,1,1,1,0},
             {1,1,1,1,1}};
 
-
     private Map<String,Integer[][]> puzzleMap = Map.of(
-            "pedestal_unlocked",pedestalPuzzle);
+            RecipeUnlockMapping.getUnlockName(CorruArchitectBlocks.CYSTIC_COLUMN), columnPuzzle);
+
+    private PlayerEntity player = null;
 
     public ArchiveScreenHandler(int syncId, PlayerInventory inventory) {
         super(CorruArchitect.ARCHIVE_SCREEN_HANDLER, syncId);
+        player = inventory.player;
     }
 
     public Integer[][] getPuzzleDetails(String puzzleName){
@@ -42,10 +46,6 @@ public class ArchiveScreenHandler extends ScreenHandler {
             }
         }
         return true;
-    }
-
-    public void grantAchievement(PlayerEntity player, String puzzleName){
-
     }
 
 

@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "corru_architect:pedestal"
+          "name": "corru_architect:cystic_column"
         }
       ],
       "rolls": 1.0

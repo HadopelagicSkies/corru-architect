@@ -3,7 +3,7 @@
 	"package": "com.corru_architect.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"CraftingScreenHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

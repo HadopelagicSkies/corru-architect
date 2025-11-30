@@ -35,17 +35,27 @@ public class CorruArchitectModRecipeProvider extends FabricRecipeProvider {
                         .input('n', Items.IRON_NUGGET)
                         .input('g', Items.GOLD_INGOT)
                         .input('r', Items.REDSTONE)
-                        .input('c', CorruArchitectBlocks.WILD_CORRU)
+                        .input('c', CorruArchitectItems.WILD_CORRU_CHUNK)
                         .criterion(hasItem(CorruArchitectItems.MINDSPIKE), conditionsFromItem(CorruArchitectItems.MINDSPIKE))
                         .offerTo(exporter);
 
-                createShaped(RecipeCategory.MISC, CorruArchitectBlocks.PEDESTAL, 1)
-                        .pattern("c c")
-                        .pattern(" c ")
-                        .pattern("ccc")
+                createShaped(RecipeCategory.MISC, CorruArchitectBlocks.WILD_CORRU, 1)
+                        .pattern("cc")
+                        .pattern("cc")
                         .input('c', CorruArchitectItems.WILD_CORRU_CHUNK)
-                        .criterion(hasItem(CorruArchitectBlocks.PEDESTAL), conditionsFromItem(CorruArchitectBlocks.PEDESTAL))
+                        .criterion(hasItem(CorruArchitectBlocks.WILD_CORRU), conditionsFromItem(CorruArchitectBlocks.WILD_CORRU))
                         .offerTo(exporter);
+
+                createShaped(RecipeCategory.MISC, CorruArchitectBlocks.CYSTIC_COLUMN, 1)
+                        .pattern("c c")
+                        .pattern(" b ")
+                        .pattern("cbc")
+                        .input('c', CorruArchitectItems.WILD_CORRU_CHUNK)
+                        .input('b', CorruArchitectBlocks.WILD_CORRU)
+                        .criterion(hasItem(CorruArchitectBlocks.CYSTIC_COLUMN), conditionsFromItem(CorruArchitectBlocks.CYSTIC_COLUMN))
+                        .offerTo(exporter);
+
+
             }
         };
     }

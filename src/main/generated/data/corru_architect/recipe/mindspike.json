@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "c": "corru_architect:wild_corru",
+    "c": "corru_architect:wild_corru_chunk",
     "g": "minecraft:gold_ingot",
     "i": "minecraft:iron_ingot",
     "n": "minecraft:iron_nugget",

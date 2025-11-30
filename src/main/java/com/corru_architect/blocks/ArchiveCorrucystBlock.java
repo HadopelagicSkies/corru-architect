@@ -49,6 +49,6 @@ public class ArchiveCorrucystBlock extends SimpleTooltipBlock implements NamedSc
 
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new ArchiveScreenHandler(syncId,playerInventory);
+        return new ArchiveScreenHandler(syncId, playerInventory);
     }
 }

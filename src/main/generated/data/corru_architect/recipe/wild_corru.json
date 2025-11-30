@@ -5,12 +5,11 @@
     "c": "corru_architect:wild_corru_chunk"
   },
   "pattern": [
-    "c c",
-    " c ",
-    "ccc"
+    "cc",
+    "cc"
   ],
   "result": {
     "count": 1,
-    "id": "corru_architect:pedestal"
+    "id": "corru_architect:wild_corru"
   }
 }

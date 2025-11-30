@@ -26,13 +26,15 @@ public class CorruArchitectBlocks {
         {
             itemGroup.add(CorruArchitectBlocks.WILD_CORRU.asItem());
             itemGroup.add(CorruArchitectBlocks.ARCHIVE_CORRUCYST.asItem());
-            itemGroup.add(CorruArchitectBlocks.PEDESTAL.asItem());
+            itemGroup.add(CorruArchitectBlocks.CYSTIC_COLUMN.asItem());
             itemGroup.add(CorruArchitectBlocks.CORRU_SHAPER.asItem());
             itemGroup.add(CorruArchitectBlocks.SFER_REFINERY.asItem());
             itemGroup.add(CorruArchitectBlocks.SFER_BLOCK.asItem());
         });
 
         WILD_CORRU.setTooltipDetails("wawawa", Formatting.LIGHT_PURPLE);
+
+        RecipeUnlockMapping.putAdvancementName(CYSTIC_COLUMN,"column_unlock");
     }
 
     public static <T extends Block> T register(Function<Block.Settings, T> constructor, Block.Settings blockSettings, String name, Rarity rarity) {
@@ -70,9 +72,9 @@ public class CorruArchitectBlocks {
             Rarity.EPIC
     );
 
-    public static SimpleTooltipBlock PEDESTAL = register(SimpleTooltipBlock::new,
+    public static SimpleTooltipBlock CYSTIC_COLUMN = register(SimpleTooltipBlock::new,
             AbstractBlock.Settings.create(),
-            "pedestal"
+            "cystic_column"
     );
 
     public static SimpleTooltipBlock CORRU_SHAPER = register(SimpleTooltipBlock::new,

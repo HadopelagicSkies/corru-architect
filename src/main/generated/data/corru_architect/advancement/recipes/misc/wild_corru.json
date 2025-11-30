@@ -1,32 +1,32 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_pedestal": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "corru_architect:wild_corru"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wild_corru": {
       "conditions": {
         "items": [
           {
-            "items": "corru_architect:pedestal"
+            "items": "corru_architect:wild_corru"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
-    },
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "corru_architect:pedestal"
-      },
-      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_pedestal"
+      "has_wild_corru"
     ]
   ],
   "rewards": {
     "recipes": [
-      "corru_architect:pedestal"
+      "corru_architect:wild_corru"
     ]
   }
 }

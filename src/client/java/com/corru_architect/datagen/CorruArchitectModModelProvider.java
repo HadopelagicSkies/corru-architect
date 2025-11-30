@@ -1,5 +1,6 @@
 package com.corru_architect.datagen;
 
+import com.corru_architect.CorruArchitectBlocks;
 import com.corru_architect.CorruArchitectItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -16,7 +17,10 @@ public class CorruArchitectModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        //blockStateModelGenerator.registerSimpleCubeAll();
+        blockStateModelGenerator.registerSimpleCubeAll(CorruArchitectBlocks.SFER_BLOCK);
+        blockStateModelGenerator.registerSimpleCubeAll(CorruArchitectBlocks.WILD_CORRU);
+        //blockStateModelGenerator.registerSimpleCubeAll(CorruArchitectBlocks.BLACK_CORRU);
+        //blockStateModelGenerator.registerSimpleCubeAll(CorruArchitectBlocks.PALE_CORRU);
     }
 
 

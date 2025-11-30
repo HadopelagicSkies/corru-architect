@@ -1,7 +1,7 @@
 // 1.21.4	-999999999-01-01T00:00:00	corru.architect/Block Loot Tables
 ac9afda16a28096d52bc1dcaa6da9a69556768f7 data/corru_architect/loot_table/blocks/archive_corrucyst.json
 f8e03efe9e4ba08e168977cc51a733bc352bceab data/corru_architect/loot_table/blocks/corru_shaper.json
-d60abec614e90b7ed8e2fda7f2060fd3af1a9d82 data/corru_architect/loot_table/blocks/pedestal.json
+4d7e259f11f9a377c1ec9cff9947a32cb9e85f94 data/corru_architect/loot_table/blocks/cystic_column.json
 0870b46d01d7218d072f1244d24d7f1aa224d3ef data/corru_architect/loot_table/blocks/sfer_block.json
 2f3631a96ec39601207cd65d5afea8573cb31c12 data/corru_architect/loot_table/blocks/sfer_refinery.json
 e7aa48222153331e551d5ece954ffeda1192073f data/corru_architect/loot_table/blocks/wild_corru.json

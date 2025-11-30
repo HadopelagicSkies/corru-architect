@@ -3,29 +3,22 @@ package com.corru_architect.datagen;
 import com.corru_architect.CorruArchitect;
 import com.corru_architect.CorruArchitectBlocks;
 import com.corru_architect.CorruArchitectItems;
+import com.corru_architect.RecipeUnlockMapping;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.AdvancementFrame;
-import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.advancement.criterion.ItemCriterion;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.predicate.BlockPredicate;
 import net.minecraft.predicate.entity.LocationPredicate;
-import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.registry.*;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -39,7 +32,7 @@ public class CorruArchitectModAdvancementProvider extends FabricAdvancementProvi
         AdvancementEntry rootAdvancement = Advancement.Builder.create()
                 .display(
                         CorruArchitectBlocks.ARCHIVE_CORRUCYST, // The display icon
-                        Text.literal("A Mysterious... Marble?"), // The title
+                        Text.literal("A Mysterious... Meteorite?"), // The title
                         Text.literal("Find a crash-landed Archive Corrucyst"), // The description
                         Identifier.of("textures/gui/advancements/backgrounds/adventure.png"), // Background image used
                         AdvancementFrame.TASK, // Options: TASK, CHALLENGE, GOAL
@@ -66,7 +59,8 @@ public class CorruArchitectModAdvancementProvider extends FabricAdvancementProvi
                 // The first string used in criterion is the name referenced by other advancements when they want to have 'requirements'
                 .criterion("mindspike_held",
                         InventoryChangedCriterion.Conditions.items(CorruArchitectItems.MINDSPIKE,CorruArchitectItems.MINDSPIKE_HELMET))
-                .criterion("mindspike_connect",ItemCriterion.Conditions.createItemUsedOnBlock(
+                .criterion("mindspike_connect",
+                        ItemCriterion.Conditions.createItemUsedOnBlock(
                         LocationPredicate.Builder.create().block(BlockPredicate.Builder.create().blocks(wrapperLookup.getOrThrow(RegistryKeys.BLOCK),CorruArchitectBlocks.ARCHIVE_CORRUCYST)),
                         ItemPredicate.Builder.create().items(wrapperLookup.getOrThrow(RegistryKeys.ITEM),CorruArchitectItems.MINDSPIKE)))
                 .parent(rootAdvancement)
@@ -76,7 +70,7 @@ public class CorruArchitectModAdvancementProvider extends FabricAdvancementProvi
                 .display(
                         CorruArchitectBlocks.ARCHIVE_CORRUCYST, // The display icon
                         Text.literal("Schematic Recovery"), // The title
-                        Text.literal("Repair the schematic for the Pedestal"), // The description
+                        Text.literal("Repair the schematic for the Cystic Column"), // The description
                         Identifier.of("textures/gui/advancements/backgrounds/adventure.png"), // Background image used
                         AdvancementFrame.CHALLENGE , // Options: TASK, CHALLENGE, GOAL
                         true, // Show toast top right
@@ -84,9 +78,9 @@ public class CorruArchitectModAdvancementProvider extends FabricAdvancementProvi
                         false // Hidden in the advancement tab
                 )
                 // The first string used in criterion is the name referenced by other advancements when they want to have 'requirements'
-                .criterion("pedestal_unlocked",
-                        RecipeUnlockedCriterion.create(RegistryKey.of(RegistryKeys.RECIPE,Identifier.of(CorruArchitect.MOD_ID, "pedestal"))))
+                .criterion(RecipeUnlockMapping.getUnlockName(CorruArchitectBlocks.CYSTIC_COLUMN),
+                        RecipeUnlockedCriterion.create(RegistryKey.of(RegistryKeys.RECIPE,Identifier.of(CorruArchitect.MOD_ID, "cystic_column"))))
                 .parent(mindspikeAdvancement)
-                .build(consumer, CorruArchitect.MOD_ID + "/pedestal_schematic");
+                .build(consumer, CorruArchitect.MOD_ID + "/" + RecipeUnlockMapping.getUnlockName(CorruArchitectBlocks.CYSTIC_COLUMN));
     }
 }

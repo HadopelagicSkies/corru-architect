@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": "corru_architect:wild_corru",
+    "c": "corru_architect:wild_corru_chunk"
+  },
+  "pattern": [
+    "c c",
+    " b ",
+    "cbc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "corru_architect:cystic_column"
+  }
+}

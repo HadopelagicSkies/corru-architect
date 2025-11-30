@@ -1,10 +1,14 @@
 package com.corru_architect.screen;
 
 import com.corru_architect.CorruArchitect;
+import com.corru_architect.CorruArchitectBlocks;
+import com.corru_architect.RecipeUnlockMapping;
+import com.corru_architect.packet_payloads.GrantAdvancementPayload;
 import com.corru_architect.screenhandlers.ArchiveScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -188,7 +192,7 @@ public class ArchiveScreen extends HandledScreen<ArchiveScreenHandler> {
                 puzzleCells = new PuzzleCellButton[rows][columns];
                 clearAndInit();
             }
-        }, "pedestal"));
+        }, RecipeUnlockMapping.getUnlockName(CorruArchitectBlocks.CYSTIC_COLUMN)));
 
         if (!activePuzzle.isEmpty()) {
 
@@ -207,8 +211,10 @@ public class ArchiveScreen extends HandledScreen<ArchiveScreenHandler> {
                     puzzleCells[r][c] = this.addDrawableChild(new PuzzleCellButton(x + puzzleOffsetX + c*puzzleButtonSize, y + puzzleOffsetY + r*puzzleButtonSize, buttonIndex, (button) -> {
                         if (button instanceof PuzzleCellButton) {
                             ((PuzzleCellButton) button).advanceState();
-                            if(this.handler.checkPuzzle(activePuzzle, puzzleOutput(puzzleCells)))
+                            if(this.handler.checkPuzzle(activePuzzle, puzzleOutput(puzzleCells))) {
                                 CorruArchitect.LOGGER.info("puzzle correct");
+                                ClientPlayNetworking.send(new GrantAdvancementPayload(activePuzzle));
+                            }
                         }
                     }));
                     buttonIndex++;

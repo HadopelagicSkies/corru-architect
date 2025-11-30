@@ -1,5 +1,7 @@
 // 1.21.4	-999999999-01-01T00:00:00	corru.architect/corru.architect Mod Recipe Provider
+c509fd583722c58e858f5a854d50692549ecf36b data/corru_architect/advancement/recipes/misc/cystic_column.json
 d26a53858f25f53c7315ad5e73eb74373b3a5a56 data/corru_architect/advancement/recipes/misc/mindspike.json
-1c49a210ccb261672c2d260361c72d92d8eb4f27 data/corru_architect/advancement/recipes/misc/pedestal.json
-799f877807915b4f613ef83d36eb2715a38e98cc data/corru_architect/recipe/mindspike.json
-1387e35fc0c91060d701bec5ba8e7bab7bdf361c data/corru_architect/recipe/pedestal.json
+decaa024086da598d06f61856314e4360bc18721 data/corru_architect/advancement/recipes/misc/wild_corru.json
+0f79893cdb4859b205baeaf70fb85aba9f6fd62d data/corru_architect/recipe/cystic_column.json
+939a22ae84eff181566f2a4db9155ab44d9ae9fd data/corru_architect/recipe/mindspike.json
+c394bc134f5ed8d1742d88119d3ac2511d3738db data/corru_architect/recipe/wild_corru.json

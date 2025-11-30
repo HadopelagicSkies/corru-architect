@@ -1,16 +1,16 @@
 {
   "parent": "minecraft:corru_architect/mindspike_connect",
   "criteria": {
-    "pedestal_unlocked": {
+    "column_unlock": {
       "conditions": {
-        "recipe": "corru_architect:pedestal"
+        "recipe": "corru_architect:cystic_column"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "display": {
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
-    "description": "Repair the schematic for the Pedestal",
+    "description": "Repair the schematic for the Cystic Column",
     "frame": "challenge",
     "icon": {
       "count": 1,
@@ -20,7 +20,7 @@
   },
   "requirements": [
     [
-      "pedestal_unlocked"
+      "column_unlock"
     ]
   ],
   "sends_telemetry_event": true
