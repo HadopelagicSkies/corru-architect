@@ -1,6 +1,7 @@
 package com.corru_architect;
 
 import com.corru_architect.blocks.ArchiveCorrucystBlock;
+import com.corru_architect.blocks.GroundsmindryCoreBlock;
 import com.corru_architect.blocks.SimpleTooltipBlock;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
@@ -27,9 +28,10 @@ public class CorruArchitectBlocks {
             itemGroup.add(CorruArchitectBlocks.WILD_CORRU.asItem());
             itemGroup.add(CorruArchitectBlocks.ARCHIVE_CORRUCYST.asItem());
             itemGroup.add(CorruArchitectBlocks.CYSTIC_COLUMN.asItem());
-            itemGroup.add(CorruArchitectBlocks.CORRU_SHAPER.asItem());
+            itemGroup.add(CorruArchitectBlocks.CORRU_SCULPTOR.asItem());
             itemGroup.add(CorruArchitectBlocks.SFER_REFINERY.asItem());
             itemGroup.add(CorruArchitectBlocks.SFER_BLOCK.asItem());
+            itemGroup.add(CorruArchitectBlocks.GROUNDSMINDRY_CORE.asItem());
         });
 
         WILD_CORRU.setTooltipDetails("wawawa", Formatting.LIGHT_PURPLE);
@@ -77,9 +79,9 @@ public class CorruArchitectBlocks {
             "cystic_column"
     );
 
-    public static SimpleTooltipBlock CORRU_SHAPER = register(SimpleTooltipBlock::new,
+    public static SimpleTooltipBlock CORRU_SCULPTOR = register(SimpleTooltipBlock::new,
             AbstractBlock.Settings.create(),
-            "corru_shaper"
+            "corru_sculptor"
     );
 
     public static SimpleTooltipBlock SFER_REFINERY = register(SimpleTooltipBlock::new,
@@ -102,17 +104,17 @@ public class CorruArchitectBlocks {
             "advanced_echo_terminal"
     );
 
-    public static SimpleTooltipBlock BASIC_GOLEM_FABRICATOR = register(SimpleTooltipBlock::new,
+    public static SimpleTooltipBlock BASIC_GOLEM_FOUNDRY = register(SimpleTooltipBlock::new,
             AbstractBlock.Settings.create(),
-            "basic_golem_fabricator"
+            "basic_golem_foundry"
     );
 
-    public static SimpleTooltipBlock ADVANCED_GOLEM_FABRICATOR = register(SimpleTooltipBlock::new,
+    public static SimpleTooltipBlock ADVANCED_GOLEM_FOUNDRY = register(SimpleTooltipBlock::new,
             AbstractBlock.Settings.create(),
-            "advanced_golem_fabricator"
+            "advanced_golem_foundry"
     );
 
-    public static SimpleTooltipBlock GROUNDSMINDRY_CORE = register(SimpleTooltipBlock::new,
+    public static SimpleTooltipBlock GROUNDSMINDRY_CORE = register(GroundsmindryCoreBlock::new,
             AbstractBlock.Settings.create(),
             "groundsmindry_core",
             Rarity.EPIC

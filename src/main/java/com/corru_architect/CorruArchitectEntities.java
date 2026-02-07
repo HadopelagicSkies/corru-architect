@@ -19,8 +19,6 @@ import net.minecraft.world.biome.Biome;
 public class CorruArchitectEntities {
     public static void initialize(){
 
-
-
     }
 
     public static <T extends Entity> EntityType<T> register(EntityType<T> entityType, String name, boolean shouldEgg) {

@@ -22,11 +22,9 @@ public class ArchiveScreenHandler extends ScreenHandler {
     private Map<String,Integer[][]> puzzleMap = Map.of(
             RecipeUnlockMapping.getUnlockName(CorruArchitectBlocks.CYSTIC_COLUMN), columnPuzzle);
 
-    private PlayerEntity player = null;
 
     public ArchiveScreenHandler(int syncId, PlayerInventory inventory) {
         super(CorruArchitect.ARCHIVE_SCREEN_HANDLER, syncId);
-        player = inventory.player;
     }
 
     public Integer[][] getPuzzleDetails(String puzzleName){

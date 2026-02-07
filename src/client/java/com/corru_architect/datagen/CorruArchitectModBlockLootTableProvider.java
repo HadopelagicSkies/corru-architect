@@ -19,7 +19,7 @@ public class CorruArchitectModBlockLootTableProvider extends FabricBlockLootTabl
         addDropWithSilkTouch(CorruArchitectBlocks.WILD_CORRU);
         addDrop(CorruArchitectBlocks.ARCHIVE_CORRUCYST);
         addDrop(CorruArchitectBlocks.CYSTIC_COLUMN);
-        addDrop(CorruArchitectBlocks.CORRU_SHAPER);
+        addDrop(CorruArchitectBlocks.CORRU_SCULPTOR);
         addDrop(CorruArchitectBlocks.SFER_REFINERY);
         addDrop(CorruArchitectBlocks.SFER_BLOCK);
 
