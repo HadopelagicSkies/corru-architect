@@ -1,6 +1,6 @@
 package com.corru_architect;
 
-import com.corru_architect.blocks.GroundmindsryCoreEntity;
+import com.corru_architect.blocks.GroundsmindryCore.GroundmindsryCoreEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;

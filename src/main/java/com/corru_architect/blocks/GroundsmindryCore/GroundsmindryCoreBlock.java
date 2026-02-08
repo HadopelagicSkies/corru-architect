@@ -1,6 +1,7 @@
-package com.corru_architect.blocks;
+package com.corru_architect.blocks.GroundsmindryCore;
 
 import com.corru_architect.CorruArchitectBlockEntities;
+import com.corru_architect.blocks.SimpleTooltipBlock;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

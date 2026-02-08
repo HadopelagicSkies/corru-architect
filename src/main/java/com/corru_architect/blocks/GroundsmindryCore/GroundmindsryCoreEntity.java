@@ -1,4 +1,4 @@
-package com.corru_architect.blocks;
+package com.corru_architect.blocks.GroundsmindryCore;
 
 import com.corru_architect.CorruArchitectBlockEntities;
 import net.minecraft.block.BlockState;
@@ -9,20 +9,20 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 public class GroundmindsryCoreEntity extends BlockEntity {
     public static BlockEntityTicker<GroundmindsryCoreEntity> groundmindsryCoreEntityTicker = new GroundsmindryCoreEntityTicker();
 
     private boolean growing;
+    private int growingSegment;
     private int age;
     private float radius;
     private int height;
     private int maxHeight;
     private int maxRadius;
+
+    private List<SpireSegment> spireSegments = new ArrayList<>();
 
     public GroundmindsryCoreEntity(BlockPos pos, BlockState state) {
         super(CorruArchitectBlockEntities.GROUNDSMINDRY_CORE_BLOCK_ENTITY, pos, state);
@@ -32,6 +32,9 @@ public class GroundmindsryCoreEntity extends BlockEntity {
         maxHeight = 0;
         maxRadius = 0;
         growing = false;
+        growingSegment = 0;
+        spireSegments.add(new SpireSegment(0, "ground floor"));
+        spireSegments.getFirst().setSpireBranches(List.of(new SpireBranch((int) (pos.getX() - BranchType.GROUNDSMIND_SMALL.getBoxList().getFirst().getCenter().x), (int) (pos.getY() - BranchType.GROUNDSMIND_SMALL.getBoxList().getFirst().getCenter().y), Direction.NORTH, BranchType.GROUNDSMIND_SMALL)));
     }
 
     public void setGrowing(boolean growing) {
@@ -63,6 +66,10 @@ public class GroundmindsryCoreEntity extends BlockEntity {
         return maxRadius;
     }
 
+    public List<SpireSegment> getSegments() {
+        return spireSegments;
+    }
+
     public static class GroundsmindryCoreEntityTicker implements BlockEntityTicker<GroundmindsryCoreEntity> {
         @Override
         public void tick(World world, BlockPos pos, BlockState state, GroundmindsryCoreEntity blockEntity) {
@@ -71,7 +78,7 @@ public class GroundmindsryCoreEntity extends BlockEntity {
             }
         }
 
-        public void tickGrowth(World world, BlockPos pos, BlockState state, GroundmindsryCoreEntity blockEntity){
+        public void tickGrowth(World world, BlockPos pos, BlockState state, GroundmindsryCoreEntity blockEntity) {
             if (blockEntity.growing) {
                 blockEntity.age++;
                 if (blockEntity.age % 2 == 0) {
@@ -79,12 +86,21 @@ public class GroundmindsryCoreEntity extends BlockEntity {
                     for (int i = (int) (-1 * blockEntity.radius); i < blockEntity.radius; i++) {
                         for (int j = (int) (-1 * blockEntity.radius); j < blockEntity.radius; j++) {
                             BlockPos placingPos = new BlockPos(pos.getX() + i, pos.getY() + blockEntity.height, pos.getZ() + j);
-                            if (world.getBlockState(placingPos).isAir() && placingPos.isWithinDistance(pos.add(0,blockEntity.height,0), blockEntity.radius)) { // switch to interpolate max per layer
-                                if (!(placingPos.getX() <= pos.getX() + 1 &&
-                                        placingPos.getX() >= pos.getX() - 1 &&
-                                        placingPos.getY() <= pos.getY() + 2 &&
-                                        placingPos.getY() > pos.getY() - 1 &&
-                                        placingPos.getZ() <= pos.getZ() + 1)) //this stuff is for sectioning off a tunnel, will do better later
+                            if (world.getBlockState(placingPos).isAir() && placingPos.isWithinDistance(pos.add(0, blockEntity.height, 0), blockEntity.radius)) { // switch to interpolate max per layer
+                                boolean intersectingRooms = false;
+                                if (blockEntity.getSegments().size() < blockEntity.growingSegment) {
+                                    for (SpireBranch branch : blockEntity.getSegments().get(blockEntity.growingSegment).getSpireBranches()) {
+                                        for (Box box : branch.getBranchBoxes()) {
+                                            if (box.contains(placingPos.toCenterPos())) {
+                                                intersectingRooms = true;
+                                                break;
+                                            }
+                                            if (intersectingRooms)
+                                                break;
+                                        }
+                                    }
+                                }
+                                if (!intersectingRooms)
                                     layerBlocks.add(placingPos);
                             }
                         }
@@ -106,6 +122,8 @@ public class GroundmindsryCoreEntity extends BlockEntity {
                                 blockEntity.height = blockEntity.maxHeight;
                                 blockEntity.setGrowing(false);
                             } else {
+                                if (blockEntity.height % 5 == 0)
+                                    blockEntity.growingSegment++;
                                 blockEntity.height++;
                                 blockEntity.radius = 0;
                             }

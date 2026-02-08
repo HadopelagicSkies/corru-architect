@@ -1,7 +1,7 @@
 package com.corru_architect;
 
 import com.corru_architect.blocks.ArchiveCorrucystBlock;
-import com.corru_architect.blocks.GroundsmindryCoreBlock;
+import com.corru_architect.blocks.GroundsmindryCore.GroundsmindryCoreBlock;
 import com.corru_architect.blocks.SimpleTooltipBlock;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
