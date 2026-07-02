@@ -1,9 +1,13 @@
 package com.corru_architect;
 
+import com.corru_architect.entities.CorruGolemEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -18,8 +22,13 @@ import net.minecraft.world.biome.Biome;
 
 public class CorruArchitectEntities {
     public static void initialize(){
-
+        TrackedDataHandlerRegistry.register(Humors.HUMORS_TRACKED_DATA_HANDLER);
+        FabricDefaultAttributeRegistry.register(register(CORRU_GOLEM,"corru_golem", true),CorruGolemEntity.createGolemAttributes());
     }
+
+    public static final EntityType<CorruGolemEntity> CORRU_GOLEM = EntityType.Builder.create(CorruGolemEntity::new, SpawnGroup.MISC)
+            .dimensions(0.75F,1.75F)
+            .build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(CorruArchitect.MOD_ID, "corru_golem")));
 
     public static <T extends Entity> EntityType<T> register(EntityType<T> entityType, String name, boolean shouldEgg) {
         Identifier id = Identifier.of(CorruArchitect.MOD_ID, name);
