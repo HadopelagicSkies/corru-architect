@@ -1,5 +1,7 @@
 package com.corru_architect;
 
+import com.corru_architect.base_manager.BaseResourceType;
+import com.corru_architect.base_manager.CorruBaseResources;
 import com.corru_architect.packet_payloads.GrantAdvancementPayload;
 import com.corru_architect.screenhandlers.ArchiveScreenHandler;
 import net.fabricmc.api.ModInitializer;
@@ -30,6 +32,8 @@ public class CorruArchitect implements ModInitializer {
 		CorruArchitectBlockEntities.initialize();
 		CorruArchitectComponents.initialize();
 		CorruArchitectEntities.initialize();
+
+		CorruBaseResources.initialize();
 
 		PayloadTypeRegistry.playC2S().register(GrantAdvancementPayload.ID, GrantAdvancementPayload.GRANT_ADVANCEMENT_CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(GrantAdvancementPayload.ID, (payload, context) -> {
