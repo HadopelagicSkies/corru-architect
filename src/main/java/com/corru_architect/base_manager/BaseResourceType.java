@@ -1,15 +1,17 @@
 package com.corru_architect.base_manager;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemKeys;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BaseResourceType {
 
@@ -18,78 +20,66 @@ public class BaseResourceType {
     private final String name;
     private final Map<Item,Integer> resourceItems;
     private final Map<TagKey<Item>,Integer> resourceTags;
-    BaseResourceType(String resourceName, @NotNull Map<?,Integer> resourceItems){
+    private final int initCapacity;
+
+    // All inputs as Maps
+    BaseResourceType(String resourceName, Map<Item, Integer> resourceItems, @Nullable Map<TagKey<Item>, Integer> resourceTags, int initCapacity){
         resourceTypeList.add(this);
         this.name = resourceName;
-        this.resourceItems = resourceItems.keySet().stream().findFirst().get() instanceof Item ? (Map<Item,Integer>)resourceItems : new HashMap<>();
-        this.resourceTags = resourceItems.keySet().stream().findFirst().get() instanceof TagKey ? (Map<TagKey<Item>,Integer>)resourceItems : new HashMap<>();
-    }
-    BaseResourceType(String resourceName, @NotNull List<?> resourceItems, List<Integer> resourceValues){
-        resourceTypeList.add(this);
-        this.name = resourceName;
-        this.resourceItems = new HashMap<>();
-        this.resourceTags = new HashMap<>();
-        for (int i = 0; i < resourceItems.size(); i++) {
-            if(resourceItems.get(i) instanceof Item item)
-                this.resourceItems.put(item,resourceValues.get(i));
-            else if(resourceItems.get(i) instanceof TagKey item)
-                this.resourceTags.put(item,resourceValues.get(i));
-        }
-    }
-    BaseResourceType(String resourceName, @NotNull List<?> resourceItems){
-        resourceTypeList.add(this);
-        this.name = resourceName;
-        this.resourceItems = new HashMap<>();
-        this.resourceTags = new HashMap<>();
-        for (Object resourceItem : resourceItems) {
-            if (resourceItem instanceof Item item)
-                this.resourceItems.put(item, 1);
-            else if (resourceItem instanceof TagKey item)
-                this.resourceTags.put(item, 1);
-        }
-    }
-    BaseResourceType(String resourceName, Item resourceItem,int resourceValue){
-        resourceTypeList.add(this);
-        this.name = resourceName;
-        this.resourceItems = new HashMap<>();
-        this.resourceItems.put(resourceItem,resourceValue);
-        this.resourceTags = new HashMap<>();
-    }
-    BaseResourceType(String resourceName, Item resourceItem){
-        resourceTypeList.add(this);
-        this.name = resourceName;
-        this.resourceItems = new HashMap<>();
-        this.resourceItems.put(resourceItem,1);
-        this.resourceTags = new HashMap<>();
-    }
-    BaseResourceType(String resourceName, TagKey<Item> resourceItem,int resourceValue){
-        resourceTypeList.add(this);
-        this.name = resourceName;
-        this.resourceItems = new HashMap<>();
-        this.resourceTags = new HashMap<>();
-        this.resourceTags.put(resourceItem,resourceValue);
-    }
-    BaseResourceType(String resourceName, TagKey<Item> resourceItem){
-        resourceTypeList.add(this);
-        this.name = resourceName;
-        this.resourceItems = new HashMap<>();
-        this.resourceTags = new HashMap<>();
-        this.resourceTags.put(resourceItem,1);
+        this.resourceItems = resourceItems!=null ? resourceItems:new HashMap<>();
+        this.resourceTags = resourceTags!=null ? resourceTags:new HashMap<>();
+        this.initCapacity = initCapacity;
     }
 
-    BaseResourceType(String resourceName){
-        resourceTypeList.add(this);
-        this.name = resourceName;
-        this.resourceItems = new HashMap<>();
-        this.resourceTags = new HashMap<>();
+    // All inputs as Lists
+    BaseResourceType(String resourceName, @Nullable List<Item> resourceItems,@Nullable List<Integer> itemValues,@Nullable List<TagKey<Item>> resourceTags,@Nullable List<Integer> tagValues, int initCapacity) {
+        this(resourceName, mapValues(resourceItems!=null ? resourceItems:new ArrayList<>(),itemValues!=null ? itemValues:new ArrayList<>()), mapValues(resourceTags!=null ? resourceTags:new ArrayList<>(),tagValues!=null ? tagValues:new ArrayList<>()),initCapacity);
     }
+    // All inputs as Lists with Separate Single Values
+    BaseResourceType(String resourceName,List<Item> resourceItems, int itemValue,List<TagKey<Item>> resourceTags, int tagValue, int initCapacity) {
+        this(resourceName, mapValues(resourceItems,listValue(resourceTags,itemValue)), mapValues(resourceTags,listValue(resourceTags,tagValue)),initCapacity);
+    }
+    // All inputs as Lists with Single Shared Value
+    BaseResourceType(String resourceName,List<Item> resourceItems,List<TagKey<Item>> resourceTags, int value, int initCapacity) {
+        this(resourceName, mapValues(resourceItems,listValue(resourceTags,value)), mapValues(resourceTags,listValue(resourceTags,value)),initCapacity);
+    }
+
+    // Single Item/Tag Inputs
+    BaseResourceType(String resourceName,Item resourceItem,int itemValue, int initCapacity) {
+        this(resourceName, Map.of(resourceItem,itemValue),null,initCapacity);
+    }
+    BaseResourceType(String resourceName,TagKey<Item> resourceTag,int tagValue, int initCapacity) {
+        this(resourceName,null, Map.of(resourceTag,tagValue),initCapacity);
+    }
+
+
+    //No associated items
+    BaseResourceType(String resourceName, int initCapacity){
+        this(resourceName, null,null,initCapacity);
+    }
+
+    private static <V> Map<V,Integer> mapValues(List<V> keys, List<Integer> values) {
+        Map<V, Integer> map = new HashMap<>();
+        for (int i = 0; i < Math.min(keys.size(), values.size()); i++) {
+            map.put(keys.get(i), values.get(i));
+        }
+        return map;
+    }
+    private static <V> List<Integer> listValue(List<V> keys, int value) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < keys.size(); i++) {
+            list.add(value);
+        }
+        return list;
+    }
+
 
     public static void loadTagValues() {
         for( BaseResourceType type :BaseResourceType.resourceTypeList) {
             if(!type.resourceTags.isEmpty())
                 type.resourceTags.forEach(((tagKey, integer) ->
                         Registries.ITEM.forEach((item) ->{
-                            if(new ItemStack(item,1).isIn(tagKey)){
+                            if(RegistryEntry.of(item).isIn(tagKey)){
                                 type.addResourceItem(item,integer);
                             }
                         })
@@ -123,4 +113,32 @@ public class BaseResourceType {
     public static List<BaseResourceType> getResourceTypeList() {
         return resourceTypeList;
     }
+
+    public int getInitCapacity() {
+        return initCapacity;
+    }
+
+    //For codec use
+    private static BaseResourceType codecItemConvert(String resourceName, Map<RegistryEntry<Item>, Integer> resourceItems, Map<TagKey<Item>, Integer> resourceTags, int initCapacity) {
+        return new BaseResourceType(resourceName,itemsFromRegistry(resourceItems.keySet().stream().toList()), (List<Integer>) resourceItems.values(), resourceTags.keySet().stream().toList(), (List<Integer>) resourceTags.values(),initCapacity);
+    }
+
+    private static List<Item> itemsFromRegistry(List<RegistryEntry<Item>> registryEntries){
+        List<Item> list = new ArrayList<>();
+        for (RegistryEntry<Item> registryEntry : registryEntries) {
+            list.add(registryEntry.value());
+        }
+        return list;
+    }
+
+    public static final Codec<BaseResourceType> BASE_RESOURCE_TYPE_CODEC = RecordCodecBuilder.create(baseResourceTypeInstance -> baseResourceTypeInstance.group(
+            Codec.STRING.fieldOf("name").forGetter(BaseResourceType::getName),
+            Codec.unboundedMap(Item.ENTRY_CODEC,Codec.INT).fieldOf("resourceItems").forGetter((baseResourceType)->{
+                Map<RegistryEntry<Item>, Integer> entryMap = new HashMap<>();
+                baseResourceType.resourceItems.forEach((item,integer) -> entryMap.put(RegistryEntry.of(item),integer));
+                return entryMap;
+            }),
+            Codec.unboundedMap(TagKey.codec(RegistryKeys.ITEM),Codec.INT).fieldOf("resourceTags").forGetter(BaseResourceType::getResourceTags),
+            Codec.INT.fieldOf("initCapacity").forGetter(BaseResourceType::getInitCapacity)
+            ).apply(baseResourceTypeInstance, BaseResourceType::codecItemConvert));
 }

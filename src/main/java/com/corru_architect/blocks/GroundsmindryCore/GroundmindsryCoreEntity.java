@@ -4,7 +4,6 @@ import com.corru_architect.CorruArchitectBlockEntities;
 import com.corru_architect.base_manager.BaseManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
@@ -12,7 +11,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroundmindsryCoreEntity extends BlockEntity implements BaseManager {
+public class GroundmindsryCoreEntity extends BaseManager {
     public static BlockEntityTicker<GroundmindsryCoreEntity> groundmindsryCoreEntityTicker = new GroundsmindryCoreEntityTicker();
 
     private boolean growing;
@@ -71,11 +70,12 @@ public class GroundmindsryCoreEntity extends BlockEntity implements BaseManager 
         return spireSegments;
     }
 
-    public static class GroundsmindryCoreEntityTicker implements BlockEntityTicker<GroundmindsryCoreEntity> {
+    public static class GroundsmindryCoreEntityTicker extends BaseManagerTicker<GroundmindsryCoreEntity> {
         @Override
         public void tick(World world, BlockPos pos, BlockState state, GroundmindsryCoreEntity blockEntity) {
+            super.tick(world, pos, state, blockEntity);
             if (!world.isClient) {
-                tickGrowth(world, pos, state, blockEntity);
+                //tickGrowth(world, pos, state, blockEntity);
             }
         }
 
