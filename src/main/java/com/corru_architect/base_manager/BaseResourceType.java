@@ -18,7 +18,7 @@ import java.util.*;
 public class BaseResourceType {
 
     public static final RegistryKey<Registry<BaseResourceType>> BASE_RESOURCE_REGISTRY_KEY = RegistryKey.ofRegistry(Identifier.of(CorruArchitect.MOD_ID,"base_resource"));
-    public static final Registry<BaseResourceType> BASE_RESOURCE_REGISTRY = Registries.create(BASE_RESOURCE_REGISTRY_KEY,BaseResourceType::register);
+    public static final Registry<BaseResourceType> BASE_RESOURCE_REGISTRY = Registries.create(BASE_RESOURCE_REGISTRY_KEY,() -> new BaseResourceType("",0));
     private RegistryEntry.Reference<BaseResourceType> registryEntry;
 
     private static final List<BaseResourceType> resourceTypeList = new ArrayList<>();
