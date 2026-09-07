@@ -25,12 +25,11 @@ public class BaseManager extends BlockEntity{
     public static BlockEntityTicker<BaseManager> baseManagerBlockEntityTicker = new BaseManagerTicker<>();
 
     public List<BlockPos> linkedBlocks = new ArrayList<>();
-    public Map<BaseResourceType,Integer> resourceMeters = HashMap.newHashMap(BaseResourceType.getResourceTypeList().size());
-    public Map<BaseResourceType,Integer> resourceCapacity = HashMap.newHashMap(BaseResourceType.getResourceTypeList().size());
+    public Map<BaseResourceType,Integer> resourceMeters = new HashMap<>();
+    public Map<BaseResourceType,Integer> resourceCapacity = new HashMap<>();
 
     public BaseManager(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-
         BaseResourceType.getResourceTypeList().forEach((baseResourceType)-> resourceMeters.put(baseResourceType, 0));
         BaseResourceType.getResourceTypeList().forEach((baseResourceType)-> resourceCapacity.put(baseResourceType, baseResourceType.getInitCapacity()));
     }

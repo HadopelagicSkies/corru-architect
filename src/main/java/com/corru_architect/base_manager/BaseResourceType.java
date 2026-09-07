@@ -3,6 +3,7 @@ package com.corru_architect.base_manager;
 import com.corru_architect.CorruArchitect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.fabricmc.fabric.mixin.registry.sync.RegistryKeysMixin;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -18,8 +19,8 @@ import java.util.*;
 public class BaseResourceType {
 
     public static final RegistryKey<Registry<BaseResourceType>> BASE_RESOURCE_REGISTRY_KEY = RegistryKey.ofRegistry(Identifier.of(CorruArchitect.MOD_ID,"base_resource"));
-    public static final Registry<BaseResourceType> BASE_RESOURCE_REGISTRY = Registries.create(BASE_RESOURCE_REGISTRY_KEY,() -> new BaseResourceType("",0));
-    private RegistryEntry.Reference<BaseResourceType> registryEntry;
+    public static final Registry<BaseResourceType> BASE_RESOURCE_REGISTRY = Registries.create(BASE_RESOURCE_REGISTRY_KEY,registry -> register(new BaseResourceType("",0)));
+    private RegistryEntry<BaseResourceType> registryEntry;
 
     private static final List<BaseResourceType> resourceTypeList = new ArrayList<>();
 
@@ -124,7 +125,7 @@ public class BaseResourceType {
         return initCapacity;
     }
 
-    public RegistryEntry.Reference<BaseResourceType> getRegistryEntry() {
+    public RegistryEntry<BaseResourceType> getRegistryEntry() {
         return registryEntry;
     }
 
@@ -147,8 +148,8 @@ public class BaseResourceType {
     }
 
     public static BaseResourceType register(BaseResourceType baseResourceType){
-        Registry.register(BASE_RESOURCE_REGISTRY,Identifier.of(CorruArchitect.MOD_ID,"resource_type"),baseResourceType);
-        baseResourceType.registryEntry = RegistryEntry.of(baseResourceType).value().getRegistryEntry();
+        Registry.register(BASE_RESOURCE_REGISTRY,Identifier.of(CorruArchitect.MOD_ID,baseResourceType.name),baseResourceType);
+        baseResourceType.registryEntry = RegistryEntry.of(baseResourceType);
         return baseResourceType;
     }
 

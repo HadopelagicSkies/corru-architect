@@ -9,11 +9,11 @@ import net.minecraft.registry.tag.ItemTags;
 public class CorruBaseResources {
 
 
-    public static BaseResourceType essentialMetalResource = BaseResourceType.register(new BaseResourceType("essentialMetalResource",500));
-    public static BaseResourceType deadMetalResource = BaseResourceType.register(new BaseResourceType("deadMetalResource",500));
-    public static BaseResourceType corruResource = BaseResourceType.register(new BaseResourceType("corruResource",500));
-    public static BaseResourceType soilResource = BaseResourceType.register(new BaseResourceType("soilResource",ItemTags.DIRT,1,500));
-    public static BaseResourceType stoneResource = BaseResourceType.register(new BaseResourceType("stoneResource",ItemTags.STONE_CRAFTING_MATERIALS,1,500));
+    public static BaseResourceType essentialMetalResource = BaseResourceType.register(new BaseResourceType("essential_metal",500));
+    public static BaseResourceType deadMetalResource = BaseResourceType.register(new BaseResourceType("dead_metal",500));
+    public static BaseResourceType corruResource = BaseResourceType.register(new BaseResourceType("corru",500));
+    public static BaseResourceType soilResource = BaseResourceType.register(new BaseResourceType("soil",ItemTags.DIRT,1,500));
+    public static BaseResourceType stoneResource = BaseResourceType.register(new BaseResourceType("stone",ItemTags.STONE_CRAFTING_MATERIALS,1,500));
     public static BaseResourceType spireStabilityResource = BaseResourceType.register(new BaseResourceType("stability",0));
 
     public static void initialize(){
@@ -21,6 +21,7 @@ public class CorruBaseResources {
             CorruArchitect.LOGGER.info("Loading Tag Resource Costs");
             BaseResourceType.loadTagValues();
         });
+
         essentialMetalResource.addResourceItem(Items.COPPER_INGOT,9);
         essentialMetalResource.addResourceItem(Items.COPPER_BLOCK,81);
         essentialMetalResource.addResourceItem(Items.WAXED_COPPER_BLOCK,81);
