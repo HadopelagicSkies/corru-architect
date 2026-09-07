@@ -5,10 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.fabric.mixin.registry.sync.RegistryKeysMixin;
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -149,7 +146,7 @@ public class BaseResourceType {
 
     public static BaseResourceType register(BaseResourceType baseResourceType){
         Registry.register(BASE_RESOURCE_REGISTRY,Identifier.of(CorruArchitect.MOD_ID,baseResourceType.name),baseResourceType);
-        baseResourceType.registryEntry = RegistryEntry.of(baseResourceType);
+        baseResourceType.registryEntry = BASE_RESOURCE_REGISTRY.getEntry(baseResourceType);
         return baseResourceType;
     }
 
