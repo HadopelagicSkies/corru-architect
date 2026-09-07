@@ -1,19 +1,25 @@
 package com.corru_architect.base_manager;
 
+import com.corru_architect.CorruArchitect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemKeys;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class BaseResourceType {
+
+    public static final RegistryKey<Registry<BaseResourceType>> BASE_RESOURCE_REGISTRY_KEY = RegistryKey.ofRegistry(Identifier.of(CorruArchitect.MOD_ID,"base_resource"));
+    public static final Registry<BaseResourceType> BASE_RESOURCE_REGISTRY = Registries.create(BASE_RESOURCE_REGISTRY_KEY,BaseResourceType::register);
+    private RegistryEntry.Reference<BaseResourceType> registryEntry;
 
     private static final List<BaseResourceType> resourceTypeList = new ArrayList<>();
 
@@ -79,7 +85,7 @@ public class BaseResourceType {
             if(!type.resourceTags.isEmpty())
                 type.resourceTags.forEach(((tagKey, integer) ->
                         Registries.ITEM.forEach((item) ->{
-                            if(RegistryEntry.of(item).isIn(tagKey)){
+                            if(item.getRegistryEntry().isIn(tagKey)){
                                 type.addResourceItem(item,integer);
                             }
                         })
@@ -118,6 +124,10 @@ public class BaseResourceType {
         return initCapacity;
     }
 
+    public RegistryEntry.Reference<BaseResourceType> getRegistryEntry() {
+        return registryEntry;
+    }
+
     //For codec use
     private static BaseResourceType codecItemConvert(String resourceName, Map<RegistryEntry<Item>, Integer> resourceItems, Map<TagKey<Item>, Integer> resourceTags, int initCapacity) {
         return new BaseResourceType(resourceName,itemsFromRegistry(resourceItems.keySet().stream().toList()), (List<Integer>) resourceItems.values(), resourceTags.keySet().stream().toList(), (List<Integer>) resourceTags.values(),initCapacity);
@@ -132,8 +142,14 @@ public class BaseResourceType {
     }
     private static Map<RegistryEntry<Item>, Integer> itemsToRegistry(BaseResourceType baseResourceType){
         Map<RegistryEntry<Item>, Integer> entryMap = new HashMap<>();
-        baseResourceType.resourceItems.forEach((item,integer) -> entryMap.put(RegistryEntry.of(item),integer));
+        baseResourceType.resourceItems.forEach((item,integer) -> entryMap.put(item.getRegistryEntry(),integer));
         return entryMap;
+    }
+
+    public static BaseResourceType register(BaseResourceType baseResourceType){
+        Registry.register(BASE_RESOURCE_REGISTRY,Identifier.of(CorruArchitect.MOD_ID,"resource_type"),baseResourceType);
+        baseResourceType.registryEntry = RegistryEntry.of(baseResourceType).value().getRegistryEntry();
+        return baseResourceType;
     }
 
     public static final Codec<BaseResourceType> BASE_RESOURCE_TYPE_CODEC = RecordCodecBuilder.create(baseResourceTypeInstance -> baseResourceTypeInstance.group(

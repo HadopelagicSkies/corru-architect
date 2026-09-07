@@ -9,12 +9,12 @@ import net.minecraft.registry.tag.ItemTags;
 public class CorruBaseResources {
 
 
-    public static final BaseResourceType essentialMetalResource = new BaseResourceType("essentialMetalResource",500);
-    public static final BaseResourceType deadMetalResource = new BaseResourceType("deadMetalResource",500);
-    public static final BaseResourceType corruResource = new BaseResourceType("corruResource",500);
-    public static final BaseResourceType soilResource = new BaseResourceType("soilResource",ItemTags.DIRT,1,500);
-    public static final BaseResourceType stoneResource = new BaseResourceType("stoneResource",ItemTags.STONE_CRAFTING_MATERIALS,1,500);
-    public static final BaseResourceType spireStabilityResource = new BaseResourceType("stability",0);
+    public static BaseResourceType essentialMetalResource = BaseResourceType.register(new BaseResourceType("essentialMetalResource",500));
+    public static BaseResourceType deadMetalResource = BaseResourceType.register(new BaseResourceType("deadMetalResource",500));
+    public static BaseResourceType corruResource = BaseResourceType.register(new BaseResourceType("corruResource",500));
+    public static BaseResourceType soilResource = BaseResourceType.register(new BaseResourceType("soilResource",ItemTags.DIRT,1,500));
+    public static BaseResourceType stoneResource = BaseResourceType.register(new BaseResourceType("stoneResource",ItemTags.STONE_CRAFTING_MATERIALS,1,500));
+    public static BaseResourceType spireStabilityResource = BaseResourceType.register(new BaseResourceType("stability",0));
 
     public static void initialize(){
         ServerWorldEvents.LOAD.register((server, serverWorld) -> {
