@@ -46,21 +46,20 @@ public class BaseManager extends BlockEntity{
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.writeNbt(nbt, registries);
         RegistryOps<NbtElement> ops = registries.getOps(NbtOps.INSTANCE);
-        nbt.put("resourceMeters", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).encode(this.resourceMeters, ops, nbt).getOrThrow(RuntimeException::new));
-        nbt.put("resourceCapacity", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).encode(this.resourceCapacity, ops, nbt).getOrThrow(RuntimeException::new));
-
+        nbt.put("resource_meters", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).encode(this.resourceMeters, ops, nbt).getOrThrow(RuntimeException::new));
+        nbt.put("resource_capacity", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).encode(this.resourceCapacity, ops, nbt).getOrThrow(RuntimeException::new));
         List<Vector3f> linkedBlocksAsVector = new ArrayList<>(List.of());
         this.linkedBlocks.forEach(blockPos -> linkedBlocksAsVector.add(new Vector3f(blockPos.getX(),blockPos.getY(),blockPos.getZ())));
-        nbt.put("linkedBlocks", Codec.list(Codecs.VECTOR_3F).encode(linkedBlocksAsVector, ops, nbt).getOrThrow(RuntimeException::new));
+        nbt.put("linked_blocks", Codec.list(Codecs.VECTOR_3F).encode(linkedBlocksAsVector, ops, nbt).getOrThrow(RuntimeException::new));
     }
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.readNbt(nbt, registries);
         RegistryOps<NbtElement> ops = registries.getOps(NbtOps.INSTANCE);
-        DataResult<Map<BaseResourceType, Integer>> resourceMetersResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).parse(ops, nbt.getCompound("resourceMeters"));
-        DataResult<Map<BaseResourceType, Integer>> resourceCapacityResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).parse(ops, nbt.getCompound("resourceCapacity"));
-        DataResult<List<Vector3f>> linkedBlocksResult = Codec.list(Codecs.VECTOR_3F).parse(ops, nbt.getCompound("linkedBlocks"));
+        DataResult<Map<BaseResourceType, Integer>> resourceMetersResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).parse(ops, nbt.getCompound("resource_meters"));
+        DataResult<Map<BaseResourceType, Integer>> resourceCapacityResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).parse(ops, nbt.getCompound("resource_capacity"));
+        DataResult<List<Vector3f>> linkedBlocksResult = Codec.list(Codecs.VECTOR_3F).parse(ops, nbt.getCompound("linked_blocks"));
 
         if (resourceMetersResult.error().isPresent()) {
             CorruArchitect.LOGGER.debug("Failed to load Base Resource Meters from NBT: {}", resourceMetersResult.error().get());
@@ -91,7 +90,7 @@ public class BaseManager extends BlockEntity{
     public static class BaseManagerTicker<V extends BaseManager> implements BlockEntityTicker<V>{
         @Override
         public void tick(World world, BlockPos pos, BlockState state, V blockEntity) {
-            blockEntity.resourceMeters.put(CorruBaseResources.corruResource,5);
+            blockEntity.resourceMeters.put(CorruBaseResources.soilResource,5);
             for (int i = 0; i < blockEntity.linkedBlocks.size(); i++) {
                 world.getBlockEntity(blockEntity.linkedBlocks.get(i));
             }

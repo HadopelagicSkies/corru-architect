@@ -130,14 +130,15 @@ public class BaseResourceType {
         }
         return list;
     }
+    private static Map<RegistryEntry<Item>, Integer> itemsToRegistry(BaseResourceType baseResourceType){
+        Map<RegistryEntry<Item>, Integer> entryMap = new HashMap<>();
+        baseResourceType.resourceItems.forEach((item,integer) -> entryMap.put(RegistryEntry.of(item),integer));
+        return entryMap;
+    }
 
     public static final Codec<BaseResourceType> BASE_RESOURCE_TYPE_CODEC = RecordCodecBuilder.create(baseResourceTypeInstance -> baseResourceTypeInstance.group(
             Codec.STRING.fieldOf("name").forGetter(BaseResourceType::getName),
-            Codec.unboundedMap(Item.ENTRY_CODEC,Codec.INT).fieldOf("resourceItems").forGetter((baseResourceType)->{
-                Map<RegistryEntry<Item>, Integer> entryMap = new HashMap<>();
-                baseResourceType.resourceItems.forEach((item,integer) -> entryMap.put(RegistryEntry.of(item),integer));
-                return entryMap;
-            }),
+            Codec.unboundedMap(Item.ENTRY_CODEC,Codec.INT).fieldOf("resourceItems").forGetter(BaseResourceType::itemsToRegistry),
             Codec.unboundedMap(TagKey.codec(RegistryKeys.ITEM),Codec.INT).fieldOf("resourceTags").forGetter(BaseResourceType::getResourceTags),
             Codec.INT.fieldOf("initCapacity").forGetter(BaseResourceType::getInitCapacity)
             ).apply(baseResourceTypeInstance, BaseResourceType::codecItemConvert));
