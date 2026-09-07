@@ -7,10 +7,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.Item;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -30,8 +31,14 @@ public class BaseManager extends BlockEntity{
 
     public BaseManager(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        BaseResourceType.getResourceTypeList().forEach((baseResourceType)-> resourceMeters.put(baseResourceType, 0));
-        BaseResourceType.getResourceTypeList().forEach((baseResourceType)-> resourceCapacity.put(baseResourceType, baseResourceType.getInitCapacity()));
+
+        for(RegistryKey<BaseResourceType> resourceKey :BaseResourceType.BASE_RESOURCE_REGISTRY.getKeys()) {
+            BaseResourceType resourceType = BaseResourceType.BASE_RESOURCE_REGISTRY.get(resourceKey);
+            if(resourceType!= null && resourceType.getManagerBlock().equals(state.getBlock())){
+                resourceMeters.put(resourceType, 0);
+                resourceCapacity.put(resourceType, resourceType.getInitCapacity());
+            }
+        }
     }
 
     public void addLinkedBlock(BlockPos blockPos){
@@ -52,41 +59,40 @@ public class BaseManager extends BlockEntity{
         Map<RegistryEntry<BaseResourceType>, Integer> capacityEntryMap = new HashMap<>();
         this.resourceMeters.forEach((type, integer) -> meterEntryMap.put(type.getRegistryEntry(),integer));
         this.resourceCapacity.forEach((type, integer) -> capacityEntryMap.put(type.getRegistryEntry(),integer));
-        nbt.put("resource_meters", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.INT).encode(meterEntryMap, ops, nbt).getOrThrow(RuntimeException::new));
-        nbt.put("resource_capacity", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(), Codec.INT).encode(capacityEntryMap, ops, nbt).getOrThrow(RuntimeException::new));
+        nbt.put("resource_meters", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.INT).encodeStart(ops,meterEntryMap).getOrThrow(RuntimeException::new));
+        nbt.put("resource_capacity", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(), Codec.INT).encodeStart(ops,capacityEntryMap).getOrThrow(RuntimeException::new));
         List<Vector3f> linkedBlocksAsVector = new ArrayList<>(List.of());
         this.linkedBlocks.forEach(blockPos -> linkedBlocksAsVector.add(new Vector3f(blockPos.getX(),blockPos.getY(),blockPos.getZ())));
-        nbt.put("linked_blocks", Codec.list(Codecs.VECTOR_3F).encode(linkedBlocksAsVector, ops, nbt).getOrThrow(RuntimeException::new));
+        nbt.put("linked_blocks", Codec.list(Codecs.VECTOR_3F).encodeStart(ops,linkedBlocksAsVector).getOrThrow(RuntimeException::new));
     }
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.readNbt(nbt, registries);
         RegistryOps<NbtElement> ops = registries.getOps(NbtOps.INSTANCE);
-        DataResult<Map<BaseResourceType, Integer>> resourceMetersResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).parse(ops, nbt.getCompound("resource_meters"));
-        DataResult<Map<BaseResourceType, Integer>> resourceCapacityResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_TYPE_CODEC,Codec.INT).parse(ops, nbt.getCompound("resource_capacity"));
+        DataResult<Map<RegistryEntry<BaseResourceType>, Integer>> resourceMetersResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.INT).parse(ops, nbt.getCompound("resource_meters"));
+        DataResult<Map<RegistryEntry<BaseResourceType>, Integer>> resourceCapacityResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.INT).parse(ops, nbt.getCompound("resource_capacity"));
         DataResult<List<Vector3f>> linkedBlocksResult = Codec.list(Codecs.VECTOR_3F).parse(ops, nbt.getCompound("linked_blocks"));
 
         if (resourceMetersResult.error().isPresent()) {
             CorruArchitect.LOGGER.debug("Failed to load Base Resource Meters from NBT: {}", resourceMetersResult.error().get());
-            BaseResourceType.getResourceTypeList().forEach((baseResourceType)-> resourceMeters.put(baseResourceType, 0));
         } else {
-            this.resourceMeters = resourceMetersResult.result().orElseThrow();
+            Map<BaseResourceType, Integer> meterEntryMap = new HashMap<>();
+            resourceMetersResult.result().orElseThrow().forEach((type, integer) -> meterEntryMap.put(type.value(),integer));
+            this.resourceMeters = meterEntryMap;
         }
 
         if (resourceCapacityResult.error().isPresent()) {
             CorruArchitect.LOGGER.debug("Failed to load Base Resource Capacities from NBT: {}", resourceCapacityResult.error().get());
-
         } else {
-            this.resourceCapacity = resourceCapacityResult.result().orElseThrow();
+            Map<BaseResourceType, Integer> capacityEntryMap = new HashMap<>();
+            resourceCapacityResult.result().orElseThrow().forEach((type, integer) -> capacityEntryMap.put(type.value(),integer));
+            this.resourceCapacity = capacityEntryMap;
         }
 
         if (linkedBlocksResult.error().isPresent()) {
             CorruArchitect.LOGGER.debug("Failed to load Base Manager Linked Blocks from NBT: {}", linkedBlocksResult.error().get());
             this.linkedBlocks = new ArrayList<>();
-            Map<BaseResourceType,Integer> initCapacities = new HashMap<>();
-            BaseResourceType.getResourceTypeList().forEach((baseResourceType)-> initCapacities.put(baseResourceType, baseResourceType.getInitCapacity()));
-            this.resourceCapacity = initCapacities;
         } else {
             this.linkedBlocks = new ArrayList<>();
             linkedBlocksResult.getOrThrow().forEach(vecPos -> this.linkedBlocks.add(new BlockPos((int) vecPos.x(), (int) vecPos.y(), (int) vecPos.z())));
