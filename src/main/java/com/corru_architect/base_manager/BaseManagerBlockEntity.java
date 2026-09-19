@@ -22,20 +22,21 @@ import org.joml.Vector3f;
 
 import java.util.*;
 
-public class BaseManager extends BlockEntity{
-    public static BlockEntityTicker<BaseManager> baseManagerBlockEntityTicker = new BaseManagerTicker<>();
+public class BaseManagerBlockEntity extends BlockEntity{
+    public static BlockEntityTicker<BaseManagerBlockEntity> baseManagerBlockEntityTicker = new BaseManagerTicker<>();
 
     public List<BlockPos> linkedBlocks = new ArrayList<>();
-    public Map<BaseResourceType,Integer> resourceMeters = new HashMap<>();
-    public Map<BaseResourceType,Integer> resourceCapacity = new HashMap<>();
+    public Map<BaseResourceType,Float> resourceMeters = new HashMap<>();
+    public Map<BaseResourceType,Float> resourceCapacity = new HashMap<>();
+    public Map<BaseResourceType,Float> resourceMultiplier = new HashMap<>();
 
-    public BaseManager(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public BaseManagerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
         for(RegistryKey<BaseResourceType> resourceKey :BaseResourceType.BASE_RESOURCE_REGISTRY.getKeys()) {
             BaseResourceType resourceType = BaseResourceType.BASE_RESOURCE_REGISTRY.get(resourceKey);
             if(resourceType!= null && resourceType.getManagerBlock().equals(state.getBlock())){
-                resourceMeters.put(resourceType, 0);
+                resourceMeters.put(resourceType, 0F);
                 resourceCapacity.put(resourceType, resourceType.getInitCapacity());
             }
         }
@@ -55,12 +56,15 @@ public class BaseManager extends BlockEntity{
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.writeNbt(nbt, registries);
         RegistryOps<NbtElement> ops = registries.getOps(NbtOps.INSTANCE);
-        Map<RegistryEntry<BaseResourceType>, Integer> meterEntryMap = new HashMap<>();
-        Map<RegistryEntry<BaseResourceType>, Integer> capacityEntryMap = new HashMap<>();
-        this.resourceMeters.forEach((type, integer) -> meterEntryMap.put(type.getRegistryEntry(),integer));
-        this.resourceCapacity.forEach((type, integer) -> capacityEntryMap.put(type.getRegistryEntry(),integer));
-        nbt.put("resource_meters", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.INT).encodeStart(ops,meterEntryMap).getOrThrow(RuntimeException::new));
-        nbt.put("resource_capacity", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(), Codec.INT).encodeStart(ops,capacityEntryMap).getOrThrow(RuntimeException::new));
+        Map<RegistryEntry<BaseResourceType>, Float> meterEntryMap = new HashMap<>();
+        Map<RegistryEntry<BaseResourceType>, Float> capacityEntryMap = new HashMap<>();
+        Map<RegistryEntry<BaseResourceType>, Float> multEntryMap = new HashMap<>();
+        this.resourceMeters.forEach((type, value) -> meterEntryMap.put(type.getRegistryEntry(),value));
+        this.resourceCapacity.forEach((type, value) -> capacityEntryMap.put(type.getRegistryEntry(),value));
+        this.resourceMultiplier.forEach((type, value) -> multEntryMap.put(type.getRegistryEntry(),value));
+        nbt.put("resource_meters", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.FLOAT).encodeStart(ops,meterEntryMap).getOrThrow(RuntimeException::new));
+        nbt.put("resource_capacity", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(), Codec.FLOAT).encodeStart(ops,capacityEntryMap).getOrThrow(RuntimeException::new));
+        nbt.put("resource_mult", Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(), Codec.FLOAT).encodeStart(ops,multEntryMap).getOrThrow(RuntimeException::new));
         List<Vector3f> linkedBlocksAsVector = new ArrayList<>(List.of());
         this.linkedBlocks.forEach(blockPos -> linkedBlocksAsVector.add(new Vector3f(blockPos.getX(),blockPos.getY(),blockPos.getZ())));
         nbt.put("linked_blocks", Codec.list(Codecs.VECTOR_3F).encodeStart(ops,linkedBlocksAsVector).getOrThrow(RuntimeException::new));
@@ -70,24 +74,33 @@ public class BaseManager extends BlockEntity{
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.readNbt(nbt, registries);
         RegistryOps<NbtElement> ops = registries.getOps(NbtOps.INSTANCE);
-        DataResult<Map<RegistryEntry<BaseResourceType>, Integer>> resourceMetersResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.INT).parse(ops, nbt.getCompound("resource_meters"));
-        DataResult<Map<RegistryEntry<BaseResourceType>, Integer>> resourceCapacityResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.INT).parse(ops, nbt.getCompound("resource_capacity"));
+        DataResult<Map<RegistryEntry<BaseResourceType>, Float>> resourceMetersResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.FLOAT).parse(ops, nbt.getCompound("resource_meters"));
+        DataResult<Map<RegistryEntry<BaseResourceType>, Float>> resourceCapacityResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.FLOAT).parse(ops, nbt.getCompound("resource_capacity"));
+        DataResult<Map<RegistryEntry<BaseResourceType>, Float>> resourceMultResult = Codec.unboundedMap(BaseResourceType.BASE_RESOURCE_REGISTRY.getEntryCodec(),Codec.FLOAT).parse(ops, nbt.getCompound("resource_mult"));
         DataResult<List<Vector3f>> linkedBlocksResult = Codec.list(Codecs.VECTOR_3F).parse(ops, nbt.getCompound("linked_blocks"));
 
         if (resourceMetersResult.error().isPresent()) {
             CorruArchitect.LOGGER.debug("Failed to load Base Resource Meters from NBT: {}", resourceMetersResult.error().get());
         } else {
-            Map<BaseResourceType, Integer> meterEntryMap = new HashMap<>();
-            resourceMetersResult.result().orElseThrow().forEach((type, integer) -> meterEntryMap.put(type.value(),integer));
+            Map<BaseResourceType, Float> meterEntryMap = new HashMap<>();
+            resourceMetersResult.result().orElseThrow().forEach((type, value) -> meterEntryMap.put(type.value(),value));
             this.resourceMeters = meterEntryMap;
         }
 
         if (resourceCapacityResult.error().isPresent()) {
             CorruArchitect.LOGGER.debug("Failed to load Base Resource Capacities from NBT: {}", resourceCapacityResult.error().get());
         } else {
-            Map<BaseResourceType, Integer> capacityEntryMap = new HashMap<>();
-            resourceCapacityResult.result().orElseThrow().forEach((type, integer) -> capacityEntryMap.put(type.value(),integer));
+            Map<BaseResourceType, Float> capacityEntryMap = new HashMap<>();
+            resourceCapacityResult.result().orElseThrow().forEach((type, value) -> capacityEntryMap.put(type.value(),value));
             this.resourceCapacity = capacityEntryMap;
+        }
+
+        if (resourceMultResult.error().isPresent()) {
+            CorruArchitect.LOGGER.debug("Failed to load Base Resource Multipliers from NBT: {}", resourceCapacityResult.error().get());
+        } else {
+            Map<BaseResourceType, Float> multEntryMap = new HashMap<>();
+            resourceMultResult.result().orElseThrow().forEach((type, value) -> multEntryMap.put(type.value(),value));
+            this.resourceMultiplier = multEntryMap;
         }
 
         if (linkedBlocksResult.error().isPresent()) {
@@ -99,10 +112,10 @@ public class BaseManager extends BlockEntity{
         }
     }
 
-    public static class BaseManagerTicker<V extends BaseManager> implements BlockEntityTicker<V>{
+    public static class BaseManagerTicker<V extends BaseManagerBlockEntity> implements BlockEntityTicker<V>{
         @Override
         public void tick(World world, BlockPos pos, BlockState state, V blockEntity) {
-            blockEntity.resourceMeters.put(CorruBaseResources.soilResource,5);
+            blockEntity.resourceMeters.put(CorruBaseResources.soilResource,5F);
             for (int i = 0; i < blockEntity.linkedBlocks.size(); i++) {
                 world.getBlockEntity(blockEntity.linkedBlocks.get(i));
             }

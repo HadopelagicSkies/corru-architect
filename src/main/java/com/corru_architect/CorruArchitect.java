@@ -41,9 +41,6 @@ public class CorruArchitect implements ModInitializer {
 		});
 
 
-
-
-
 		LOGGER.info("Corru.Architect Loaded");
 	}
 }

@@ -1,7 +1,7 @@
 package com.corru_architect.blocks.GroundsmindryCore;
 
 import com.corru_architect.CorruArchitectBlockEntities;
-import com.corru_architect.base_manager.BaseManager;
+import com.corru_architect.base_manager.BaseManagerBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroundmindsryCoreEntity extends BaseManager {
+public class GroundmindsryCoreEntity extends BaseManagerBlockEntity {
     public static BlockEntityTicker<GroundmindsryCoreEntity> groundmindsryCoreEntityTicker = new GroundsmindryCoreEntityTicker();
 
     private boolean growing;
