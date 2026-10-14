@@ -1,9 +1,8 @@
 package com.corru_architect;
 
-import com.corru_architect.base_manager.BaseResourceType;
 import com.corru_architect.base_manager.CorruBaseResources;
 import com.corru_architect.packet_payloads.GrantAdvancementPayload;
-import com.corru_architect.screenhandlers.ArchiveScreenHandler;
+import com.corru_architect.screenhandlers.PuzzleScreenHandler;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -12,7 +11,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,8 @@ public class CorruArchitect implements ModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static final ScreenHandlerType<ArchiveScreenHandler> ARCHIVE_SCREEN_HANDLER = Registry.register(Registries.SCREEN_HANDLER, Identifier.of(CorruArchitect.MOD_ID, "archive_screen"), new ScreenHandlerType<>(ArchiveScreenHandler::new, FeatureSet.empty()));
+	public static final ScreenHandlerType<PuzzleScreenHandler> PUZZLE_SCREEN_HANDLER = Registry.register(Registries.SCREEN_HANDLER, Identifier.of(CorruArchitect.MOD_ID, "puzzle_screen"), new ScreenHandlerType<>(PuzzleScreenHandler::new, FeatureSet.empty()));
+	public static final String BOOK_ID = "archive_book";
 
 	@Override
 	public void onInitialize() {

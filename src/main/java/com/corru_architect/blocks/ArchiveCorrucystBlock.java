@@ -2,7 +2,7 @@ package com.corru_architect.blocks;
 
 
 import com.corru_architect.CorruArchitectItems;
-import com.corru_architect.screenhandlers.ArchiveScreenHandler;
+import com.corru_architect.screenhandlers.PuzzleScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +10,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -49,6 +48,6 @@ public class ArchiveCorrucystBlock extends SimpleTooltipBlock implements NamedSc
 
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new ArchiveScreenHandler(syncId, playerInventory);
+        return new PuzzleScreenHandler(syncId, playerInventory);
     }
 }

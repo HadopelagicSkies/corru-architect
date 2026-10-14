@@ -10,7 +10,7 @@ import net.minecraft.screen.ScreenHandler;
 
 import java.util.Map;
 
-public class ArchiveScreenHandler extends ScreenHandler {
+public class PuzzleScreenHandler extends ScreenHandler {
 
     private static final Integer[][] columnPuzzle = {
             {1,1,0,1,1},
@@ -21,10 +21,12 @@ public class ArchiveScreenHandler extends ScreenHandler {
 
     private Map<String,Integer[][]> puzzleMap = Map.of(
             RecipeUnlockMapping.getUnlockName(CorruArchitectBlocks.CYSTIC_COLUMN), columnPuzzle);
+    private PlayerEntity player;
 
 
-    public ArchiveScreenHandler(int syncId, PlayerInventory inventory) {
-        super(CorruArchitect.ARCHIVE_SCREEN_HANDLER, syncId);
+    public PuzzleScreenHandler(int syncId, PlayerInventory inventory) {
+        super(CorruArchitect.PUZZLE_SCREEN_HANDLER, syncId);
+        this.player = inventory.player;
     }
 
     public Integer[][] getPuzzleDetails(String puzzleName){

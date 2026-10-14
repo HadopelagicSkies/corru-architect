@@ -2,7 +2,7 @@ package com.corru_architect;
 
 import com.corru_architect.entity.CorruGolemEntityModel;
 import com.corru_architect.entity.CorruGolemEntityRenderer;
-import com.corru_architect.screen.ArchiveScreen;
+import com.corru_architect.puzzle.PuzzleScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -16,7 +16,7 @@ public class CorruArchitectClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		HandledScreens.register(CorruArchitect.ARCHIVE_SCREEN_HANDLER, ArchiveScreen::new);
+		HandledScreens.register(CorruArchitect.PUZZLE_SCREEN_HANDLER, PuzzleScreen::new);
 
 		EntityRendererRegistry.register(CorruArchitectEntities.CORRU_GOLEM,(context) -> new CorruGolemEntityRenderer(context) {});
 		EntityModelLayerRegistry.registerModelLayer(CORRU_GOLEM_MODEL_LAYER, CorruGolemEntityModel::getTexturedModelData);

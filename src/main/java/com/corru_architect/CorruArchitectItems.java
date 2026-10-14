@@ -2,9 +2,12 @@ package com.corru_architect;
 
 
 import com.corru_architect.items.SimpleTooltipItem;
+import com.klikli_dev.modonomicon.Modonomicon;
+import com.klikli_dev.modonomicon.registry.DataComponentRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.*;
 import net.minecraft.item.equipment.ArmorMaterials;
 import net.minecraft.item.equipment.EquipmentType;
@@ -17,7 +20,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
-import java.util.Map;
+import com.klikli_dev.modonomicon.item.ModonomiconItem;
+
 import java.util.function.Function;
 
 
@@ -33,13 +37,13 @@ public class CorruArchitectItems {
         Registry.register(Registries.ITEM_GROUP, CORRU_ARCHITECT_GROUP_KEY, CORRU_ARCHITECT_GROUP);
         ItemGroupEvents.modifyEntriesEvent(CORRU_ARCHITECT_GROUP_KEY)
                 .register((itemGroup) -> {
+                    itemGroup.add(CorruArchitectItems.PORTABLE_ARCHIVE);
                     itemGroup.add(CorruArchitectItems.WILD_CORRU_CHUNK);
                     itemGroup.add(CorruArchitectItems.MINDSPIKE);
                     itemGroup.add(CorruArchitectItems.MINDSPIKE_HELMET);
                     itemGroup.add(CorruArchitectItems.ECHO_CORRUCYST);
                     itemGroup.add(CorruArchitectItems.SFER_CUBE);
                 });
-
         WILD_CORRU_CHUNK.setTooltipDetails("wawawa", Formatting.LIGHT_PURPLE);
     }
 
@@ -55,6 +59,13 @@ public class CorruArchitectItems {
     private static Item register(Item.Settings itemSettings, String name) {
         return register(Item::new,itemSettings,name);
     }
+
+    public static ModonomiconItem PORTABLE_ARCHIVE = register(ModonomiconItem::new,
+            new Item.Settings()
+                    //.component(DataComponentRegistry.BOOK_ID.get(), Identifier.of(CorruArchitect.MOD_ID,CorruArchitect.BOOK_ID))
+                    .rarity(Rarity.EPIC),
+            "portable_archive"
+    );
 
     public static SimpleTooltipItem WILD_CORRU_CHUNK = register(SimpleTooltipItem::new,
             new Item.Settings().rarity(Rarity.EPIC),
