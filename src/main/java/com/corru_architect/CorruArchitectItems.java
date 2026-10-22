@@ -62,7 +62,7 @@ public class CorruArchitectItems {
 
     public static ModonomiconItem PORTABLE_ARCHIVE = register(ModonomiconItem::new,
             new Item.Settings()
-                    //.component(DataComponentRegistry.BOOK_ID.get(), Identifier.of(CorruArchitect.MOD_ID,CorruArchitect.BOOK_ID))
+                    .component(DataComponentRegistry.BOOK_ID.get(), Identifier.of(CorruArchitect.MOD_ID,CorruArchitect.BOOK_ID))
                     .rarity(Rarity.EPIC),
             "portable_archive"
     );

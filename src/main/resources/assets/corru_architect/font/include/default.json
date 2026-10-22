@@ -1,0 +1,16 @@
+{
+  "providers": [
+    {
+      "type": "reference",
+      "id": "corru_architect:font/include/space"
+    },
+    {
+      "type": "reference",
+      "id": "corru_architect:font/beechsmall"
+    },
+    {
+      "type": "reference",
+      "id": "minecraft:include/default"
+    }
+  ]
+}

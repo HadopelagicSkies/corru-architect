@@ -34,7 +34,7 @@ public class CorruArchitectModAdvancementProvider extends FabricAdvancementProvi
                         CorruArchitectBlocks.ARCHIVE_CORRUCYST, // The display icon
                         Text.literal("A Mysterious... Meteorite?"), // The title
                         Text.literal("Find a crash-landed Archive Corrucyst"), // The description
-                        Identifier.of("textures/gui/advancements/backgrounds/adventure.png"), // Background image used
+                        Identifier.of("assets/corru_architect/textures/gui/advancements/backgrounds/adventure.png"), // Background image used
                         AdvancementFrame.TASK, // Options: TASK, CHALLENGE, GOAL
                         true, // Show toast top right
                         true, // Announce to chat
@@ -50,7 +50,7 @@ public class CorruArchitectModAdvancementProvider extends FabricAdvancementProvi
                         CorruArchitectItems.MINDSPIKE, // The display icon
                         Text.literal("ATTENTION::'mindspike logging active'"), // The title
                         Text.literal("Construct a Mindspike and Mindspike Helmet, and attempt connection to the Archive Corrucyst"), // The description
-                        Identifier.of("textures/gui/advancements/backgrounds/adventure.png"), // Background image used
+                        Identifier.of("assets/corru_architect/textures/gui/advancements/backgrounds/adventure.png"), // Background image used
                         AdvancementFrame.TASK, // Options: TASK, CHALLENGE, GOAL
                         true, // Show toast top right
                         true, // Announce to chat
@@ -71,7 +71,7 @@ public class CorruArchitectModAdvancementProvider extends FabricAdvancementProvi
                         CorruArchitectBlocks.ARCHIVE_CORRUCYST, // The display icon
                         Text.literal("Schematic Recovery"), // The title
                         Text.literal("Repair the schematic for the Cystic Column"), // The description
-                        Identifier.of("textures/gui/advancements/backgrounds/adventure.png"), // Background image used
+                        Identifier.of("assets/corru_architect/textures/gui/advancements/backgrounds/adventure.png"), // Background image used
                         AdvancementFrame.CHALLENGE , // Options: TASK, CHALLENGE, GOAL
                         true, // Show toast top right
                         true, // Announce to chat

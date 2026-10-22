@@ -1,6 +1,7 @@
 package com.corru_architect.datagen.book_gen;
 
 import com.corru_architect.CorruArchitect;
+import com.corru_architect.CorruArchitectItems;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconLanguageProvider;
 import com.klikli_dev.modonomicon.api.datagen.SingleBookSubProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
@@ -10,7 +11,10 @@ import com.klikli_dev.modonomicon.datagen.book.demo.ConditionalCategory;
 import com.klikli_dev.modonomicon.datagen.book.demo.FeaturesCategory;
 import com.klikli_dev.modonomicon.datagen.book.demo.FormattingCategory;
 import com.klikli_dev.modonomicon.datagen.book.demo.IndexModeCategory;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
+
+import java.util.function.BiConsumer;
 
 public class ArchiveBook extends SingleBookSubProvider {
     public static final String ID = CorruArchitect.BOOK_ID;
@@ -19,14 +23,18 @@ public class ArchiveBook extends SingleBookSubProvider {
         super(ID, modid, lang);
     }
 
-
+    @Override
+    public void generate(BiConsumer<Identifier, BookModel> consumer, RegistryWrapper.WrapperLookup registries) {
+        super.generate(consumer, registries);
+    }
 
     protected BookModel additionalSetup(BookModel book) {
+        super.additionalSetup(book).withDontGenerateJson(false).withGenerateBookItem(true).withCustomBookItem(Identifier.of(CorruArchitect.MOD_ID,"portable_archive"));
         BookCommandModel commandEntryCommand = BookCommandModel.create(this.modLoc("test_command"), "/give @s minecraft:apple 1").withPermissionLevel(2).withSuccessMessage("modonomicon.command.test_command.success");
         this.add(commandEntryCommand.getSuccessMessage(), "You got an apple, because reading is cool!");
         BookCommandModel commandEntryLinkCommand = BookCommandModel.create(this.modLoc("test_command2"), "/give @s minecraft:wheat 1").withPermissionLevel(2).withSuccessMessage("modonomicon.command.test_command2.success");
         this.add(commandEntryLinkCommand.getSuccessMessage(), "You got wheat, because clicking is cool!");
-        return book.withModel(Identifier.of("corru_architect:portable_archive")).withBookTextOffsetX(5).withBookTextOffsetY(0).withBookTextOffsetWidth(-5).withCommand(commandEntryCommand).withCommand(commandEntryLinkCommand).withAllowOpenBooksWithInvalidLinks(true);
+        return book.withModel(Identifier.of(CorruArchitect.MOD_ID,CorruArchitect.BOOK_ID)).withBookTextOffsetX(5).withBookTextOffsetY(0).withBookTextOffsetWidth(-5).withCommand(commandEntryCommand).withCommand(commandEntryLinkCommand).withAllowOpenBooksWithInvalidLinks(true);
     }
 
     protected void registerDefaultMacros() {

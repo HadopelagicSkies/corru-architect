@@ -5,6 +5,7 @@ import com.corru_architect.packet_payloads.GrantAdvancementPayload;
 import com.corru_architect.screenhandlers.PuzzleScreenHandler;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.registry.Registries;
@@ -17,14 +18,17 @@ import org.slf4j.LoggerFactory;
 
 public class CorruArchitect implements ModInitializer {
 	public static final String MOD_ID = "corru_architect";
-
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final ScreenHandlerType<PuzzleScreenHandler> PUZZLE_SCREEN_HANDLER = Registry.register(Registries.SCREEN_HANDLER, Identifier.of(CorruArchitect.MOD_ID, "puzzle_screen"), new ScreenHandlerType<>(PuzzleScreenHandler::new, FeatureSet.empty()));
 	public static final String BOOK_ID = "archive_book";
+	public static final Identifier FONT_ID = Identifier.of(CorruArchitect.MOD_ID, "font/include/default.json");
+
 
 	@Override
 	public void onInitialize() {
+
+
 
 		CorruArchitectItems.initialize();
 		CorruArchitectBlocks.initialize();
@@ -38,6 +42,7 @@ public class CorruArchitect implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(GrantAdvancementPayload.ID, (payload, context) -> {
 			RecipeUnlockMapping.grantAdvancement(context.player(),payload.puzzleName());
 		});
+
 
 
 		LOGGER.info("Corru.Architect Loaded");

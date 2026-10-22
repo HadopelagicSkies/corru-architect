@@ -3,6 +3,10 @@ package com.corru_architect.blocks;
 
 import com.corru_architect.CorruArchitectItems;
 import com.corru_architect.screenhandlers.PuzzleScreenHandler;
+import com.klikli_dev.modonomicon.book.Book;
+import com.klikli_dev.modonomicon.client.gui.BookGuiManager;
+import com.klikli_dev.modonomicon.client.gui.book.BookAddress;
+import com.klikli_dev.modonomicon.item.ModonomiconItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,12 +34,10 @@ public class ArchiveCorrucystBlock extends SimpleTooltipBlock implements NamedSc
 
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
+        if (world.isClient) {
             if(player.getStackInHand(hand).isOf(CorruArchitectItems.MINDSPIKE) && player.getEquippedStack(EquipmentSlot.HEAD).isOf(CorruArchitectItems.MINDSPIKE_HELMET)){
-                NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
-                if (screenHandlerFactory != null) {
-                    player.openHandledScreen(screenHandlerFactory);
-                }
+                Book book = ModonomiconItem.getBook(new ItemStack(CorruArchitectItems.PORTABLE_ARCHIVE,1));
+                BookGuiManager.get().openBook(BookAddress.defaultFor(book));
             }
         }
         return ActionResult.SUCCESS;

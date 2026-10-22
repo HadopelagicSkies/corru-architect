@@ -16,12 +16,12 @@ import net.minecraft.util.Identifier;
 
 public class PuzzleScreen extends HandledScreen<PuzzleScreenHandler> {
 
-    private static final Identifier BACKGROUND_FRAME = Identifier.of(CorruArchitect.MOD_ID, "textures/gui/archive_screen.png");
-    private static final Identifier TEST_BACKGROUND_FILL = Identifier.of(CorruArchitect.MOD_ID, "textures/gui/test_screen_fill.png");
-    private static final Identifier PUZZLE_PRESSED = Identifier.of(CorruArchitect.MOD_ID, "textures/gui/puzzle_pressed.png");
-    private static final Identifier PUZZLE_UNPRESSED = Identifier.of(CorruArchitect.MOD_ID, "textures/gui/puzzle_unpressed.png");
-    private static final Identifier PUZZLE_X = Identifier.of(CorruArchitect.MOD_ID, "textures/gui/puzzle_x.png");
-    private static final Identifier PUZZLE_BACKGROUND = Identifier.of(CorruArchitect.MOD_ID, "textures/gui/puzzle_background.png");
+    private static final Identifier BACKGROUND_FRAME = Identifier.of(CorruArchitect.MOD_ID, "assets/corru_architect/textures/gui/archive_screen.png");
+    private static final Identifier TEST_BACKGROUND_FILL = Identifier.of(CorruArchitect.MOD_ID, "assets/corru_architect/textures/gui/test_screen_fill.png");
+    private static final Identifier PUZZLE_PRESSED = Identifier.of(CorruArchitect.MOD_ID, "assets/corru_architect/textures/gui/puzzle_pressed.png");
+    private static final Identifier PUZZLE_UNPRESSED = Identifier.of(CorruArchitect.MOD_ID, "assets/corru_architect/textures/gui/puzzle_unpressed.png");
+    private static final Identifier PUZZLE_X = Identifier.of(CorruArchitect.MOD_ID, "assets/corru_architect/textures/gui/puzzle_x.png");
+    private static final Identifier PUZZLE_BACKGROUND = Identifier.of(CorruArchitect.MOD_ID, "assets/corru_architect/textures/gui/puzzle_background.png");
 
     private static final int fillAreaSize = 253;
     private static final int puzzleButtonSize =9;
@@ -69,7 +69,7 @@ public class PuzzleScreen extends HandledScreen<PuzzleScreenHandler> {
             currentNumStack=0;
             currentNum=0;
         }
-
+        //drawing column numbers
         for (int c = activePuzzleDetails[0].length -1; c >= 0; c--) {
             for (int r = activePuzzleDetails.length -1; r >= 0; r--) {
                 if(activePuzzleDetails[r][c] == 1){

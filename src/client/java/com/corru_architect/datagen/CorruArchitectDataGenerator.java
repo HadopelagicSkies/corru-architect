@@ -6,8 +6,6 @@ import com.corru_architect.datagen.book_gen.ArchiveBook;
 import com.corru_architect.datagen.book_gen.ArchiveMultiblockProvider;
 import com.klikli_dev.modonomicon.api.datagen.*;
 import com.klikli_dev.modonomicon.datagen.EnUsProvider;
-import com.klikli_dev.modonomicon.datagen.ItemTagsProvider;
-import com.klikli_dev.modonomicon.datagen.ModonomiconModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -27,7 +25,5 @@ public class CorruArchitectDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider((FabricDataGenerator.Pack.Factory<EnUsProvider>) (output) -> new EnUsProvider(output, enUsCache));
 		pack.addProvider((FabricDataGenerator.Pack.Factory<AddToModonomiconLanguageProvider>) (output) -> new AddToModonomiconLanguageProvider(output, CorruArchitect.MOD_ID, "en_us", addToLangCache));
 		pack.addProvider((FabricDataGenerator.Pack.Factory<ArchiveMultiblockProvider>) (output) -> new ArchiveMultiblockProvider(output, CorruArchitect.MOD_ID));
-		pack.addProvider(ModonomiconModelProvider::new);
-		pack.addProvider(ItemTagsProvider::new);
 	}
 }

@@ -1,10 +1,14 @@
 package com.corru_architect.items;
 
+import com.corru_architect.CorruArchitect;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 
 import java.util.List;
 
@@ -18,7 +22,7 @@ public class SimpleTooltipItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if(!tooltipText.isEmpty())
-            tooltip.add(Text.translatable(tooltipText).formatted(tooltipColor));
+            tooltip.add(Text.translatable(tooltipText).formatted(tooltipColor).setStyle(Style.EMPTY.withFont(CorruArchitect.FONT_ID)));
         super.appendTooltip(stack, context, tooltip, type);
     }
 
