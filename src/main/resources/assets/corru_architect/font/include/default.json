@@ -2,11 +2,11 @@
   "providers": [
     {
       "type": "reference",
-      "id": "corru_architect:font/include/space"
+      "id": "corru_architect:include/space"
     },
     {
       "type": "reference",
-      "id": "corru_architect:font/beechsmall"
+      "id": "corru_architect:beechsmall"
     },
     {
       "type": "reference",

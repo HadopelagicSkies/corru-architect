@@ -22,6 +22,7 @@ public class CorruArchitect implements ModInitializer {
 
 	public static final ScreenHandlerType<PuzzleScreenHandler> PUZZLE_SCREEN_HANDLER = Registry.register(Registries.SCREEN_HANDLER, Identifier.of(CorruArchitect.MOD_ID, "puzzle_screen"), new ScreenHandlerType<>(PuzzleScreenHandler::new, FeatureSet.empty()));
 	public static final String BOOK_ID = "archive_book";
+	//public static final Identifier FONT_ID = Identifier.of(CorruArchitect.MOD_ID, "font/beechsmall.json");
 	public static final Identifier FONT_ID = Identifier.of(CorruArchitect.MOD_ID, "font/include/default.json");
 
 
