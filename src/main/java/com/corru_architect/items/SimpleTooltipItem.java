@@ -10,6 +10,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SimpleTooltipItem extends Item {
@@ -17,17 +19,31 @@ public class SimpleTooltipItem extends Item {
         super(settings);
     }
 
-    private String tooltipText = "";
+    private List<String> tooltipText = new ArrayList<>();
+    private List<Identifier> tooltipIdentifier = new ArrayList<>();
     private Formatting tooltipColor = Formatting.WHITE;
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        if(!tooltipText.isEmpty())
-            tooltip.add(Text.translatable(tooltipText).formatted(tooltipColor).setStyle(Style.EMPTY.withFont(CorruArchitect.FONT_ID)));
+        if (!tooltipIdentifier.isEmpty()){
+            for (Identifier text : tooltipIdentifier) {
+                tooltip.add(Text.translatable(text.toTranslationKey()).formatted(tooltipColor).setStyle(Style.EMPTY.withFont(CorruArchitect.FONT_ID).withColor(tooltipColor)));
+            }
+        }else if(!tooltipText.isEmpty()){
+                for (String text : tooltipText) {
+                    tooltip.add(Text.translatable(text).formatted(tooltipColor).setStyle(Style.EMPTY.withFont(CorruArchitect.FONT_ID).withColor(tooltipColor)));
+                }
+        }
+
         super.appendTooltip(stack, context, tooltip, type);
     }
 
-    public void setTooltipDetails(String tooltipText, Formatting tooltipColor){
-        this.tooltipText = tooltipText;
+    public void setTooltipDetails(Formatting tooltipColor, String... tooltipText ){
+        this.tooltipText = Arrays.stream(tooltipText).toList();
+        this.tooltipColor = tooltipColor;
+    }
+
+    public void setTooltipDetails(Formatting tooltipColor, Identifier... tooltipIdentifier ){
+        this.tooltipIdentifier = Arrays.stream(tooltipIdentifier).toList();
         this.tooltipColor = tooltipColor;
     }
 }

@@ -6,6 +6,10 @@
     },
     {
       "type": "reference",
+      "id": "corru_architect:beechsmallupper"
+    },
+    {
+      "type": "reference",
       "id": "corru_architect:beechsmall"
     },
     {
